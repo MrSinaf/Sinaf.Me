@@ -106,6 +106,11 @@ public partial class WebDbContext : DbContext
                 .HasColumnName("commit")
                 .UseCollation("utf8mb3_uca1400_ai_ci")
                 .HasCharSet("utf8mb3");
+            entity.Property(e => e.CommitId)
+                .HasMaxLength(64)
+                .HasColumnName("commit_id")
+                .UseCollation("utf8mb3_uca1400_ai_ci")
+                .HasCharSet("utf8mb3");
             entity.Property(e => e.Modified)
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("modified");

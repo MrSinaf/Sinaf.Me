@@ -32,6 +32,7 @@ public class WebhooksController : Controller
 		
 		repository.Update = DateTime.Now;
 		repository.Branch = root.GetProperty("ref").GetString()!.Replace("refs/heads/", "");
+		repository.CommitId = headerCommit.GetProperty("id").GetString()!;
 		repository.Commit = (commit.Length > 128 ? commit[..128] : commit).Split('\n')[0];
 		repository.Added = (uint)headerCommit.GetProperty("added").GetArrayLength();
 		repository.Removed = (uint)headerCommit.GetProperty("removed").GetArrayLength();

@@ -9,6 +9,8 @@ public partial class ProjectRepository
 
     public uint ProjectId { get; set; }
 
+    public string CommitId { get; set; } = null!;
+
     public string Repository { get; set; } = null!;
 
     public string Branch { get; set; } = null!;
