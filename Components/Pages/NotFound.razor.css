@@ -1,0 +1,13 @@
+﻿main > * {
+    text-align: center;
+}
+
+main > img {
+    position: absolute;
+    z-index: -1;
+    bottom: 0;
+    left: 0;
+    height: 600px;
+    margin: auto;
+    align-self: center;
+}

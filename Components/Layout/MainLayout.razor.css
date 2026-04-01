@@ -1,0 +1,158 @@
+@keyframes nav-fixed {
+    from {
+        width: calc(var(--max-page-width) - 30px);
+    }
+    to {
+        width: var(--max-page-width);
+    }
+}
+
+header {
+    height: 78px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    background: var(--background-color-secondary);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 0.5rem;
+    margin: 15px;
+    height: 48px;
+    font-size: 1.5rem;
+    font-weight: 100;
+    color: var(--accent-color);
+    transition: margin-left 0.5s, margin-right 0.5s;
+}
+
+nav.fixed {
+    z-index: 15;
+    position: fixed;
+    margin: 0;
+    max-width: var(--max-page-width);
+    border-radius:  0 0 0.5rem 0.5rem ;
+    animation: nav-fixed 0.5s;
+    animation-fill-mode: forwards;
+}
+
+nav > p {
+    font-size: 2rem;
+}
+
+nav.fixed > p {
+    border-radius: 0 0 0 0.5rem;
+}
+
+nav > div {
+    margin-left: auto;
+    display: flex;
+}
+
+#kofi > img {
+    height: 42px;
+    margin-top: 8px;
+    transition: transform 0.1s;
+}
+
+#kofi:hover > img {
+    transform: translateY(-3px);
+}
+
+#admin > img {
+    height: 35px;
+    margin-top: 10px;
+    transition: transform 0.1s;
+}
+
+#admin:hover > img {
+    transform: translateY(-3px);
+}
+
+footer {
+    color: var(--accent-color);
+    text-align: center;
+    font-size: 0.9rem;
+    margin: 0 10px;
+}
+
+/* BLAZOR INTEGRATION ----------------------------------------------------------------------------------------------- */
+#blazor-error-ui {
+    color-scheme: light only;
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}
+
+@media (max-width: 1600px) {
+    nav.fixed {
+        width: 100%;
+        animation: none;
+    }
+}
+
+@media (max-width: 920px) {    
+    nav {
+        position: relative;
+        z-index: 1000;
+        margin: 15px auto;
+        width: fit-content;
+        border-radius: 0.5rem;
+        flex-direction: column;
+        height: auto;
+    }
+    
+    nav.fixed {
+        animation: none;
+        margin-left: 50%;
+        transform: translateX(-50%);
+        width: fit-content;
+        border-radius: 0 0 0.5rem 0.5rem;
+    }
+
+    nav.fixed > p {
+        border-radius: 0 0 0.5rem 0.5rem;
+    }
+
+    nav > p {
+        border-radius: 0.5rem;
+        margin: 0;
+    }
+    
+    nav > ul, nav > div {
+        flex-direction: column;
+        display: none;
+        text-align: center;
+        margin: 0;
+    }
+    
+    ::deep nav a:any-link {
+        margin: 4px;
+    }
+    
+    nav li, nav a:any-link {
+        text-align: center;
+        margin: auto;
+    }
+    
+    nav:hover > ul {
+        display: block;
+    }
+    
+    ul:hover {
+        display: block;
+    }
+}

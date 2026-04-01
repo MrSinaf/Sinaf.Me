@@ -1,0 +1,11 @@
+﻿@page "/login"
+@inject HttpClient Http
+@inject NavigationManager Nav
+
+<main>
+    <h1>Connexion</h1>
+    <form method="post" action="/api/auth/login">
+        <input id="password" name="password" type="password"/>
+        <button class="button" type="submit">Connexion</button>
+    </form>
+</main>

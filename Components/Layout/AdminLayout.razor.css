@@ -1,0 +1,88 @@
+@keyframes nav-fixed {
+    from {
+        width: calc(var(--max-page-width) - 30px);
+    }
+    to {
+        width: var(--max-page-width);
+    }
+}
+
+::deep body {
+    display: flex;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    background: var(--background-color-secondary);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 0.5rem;
+    margin: 15px;
+    width: 70px;
+    height: 100%;
+    font-size: 1.5rem;
+    font-weight: 100;
+    color: var(--accent-color);
+    transition: margin-left 0.5s, margin-right 0.5s;
+}
+
+nav.fixed {
+    z-index: 15;
+    position: fixed;
+    margin: 0;
+    max-width: var(--max-page-width);
+    border-radius:  0 0 0.5rem 0.5rem ;
+    animation: nav-fixed 0.5s;
+    animation-fill-mode: forwards;
+}
+
+nav > ul {
+    display: flex;
+    flex-direction: column;
+}
+
+::deep .nav-link > a {
+    padding: 0 5px;
+    margin: 0;
+}
+
+.nav-link img {
+    height: 42px;
+}
+
+::deep .nav-link--active::after {
+    left: -5px;
+    top: 5px;
+    bottom: 5px;
+    height: calc(100% - 10px);
+    width: 3px;
+}
+
+/* BLAZOR INTEGRATION ----------------------------------------------------------------------------------------------- */
+#blazor-error-ui {
+    color-scheme: light only;
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}
+
+@media (max-width: 1600px) {
+    nav.fixed {
+        width: 100%;
+        animation: none;
+    }
+}

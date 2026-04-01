@@ -1,0 +1,59 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@inherits LayoutComponentBase
+
+<header>
+    <nav>
+        <p>MRSINAF</p>
+        <ul>
+            <li class="nav-link">
+                <NavLink href="/" ActiveClass="nav-link--active"
+                         Match="NavLinkMatch.All">
+                    Accueil
+                </NavLink>
+            </li>
+            <li class="nav-link">
+                <NavLink href="/projects" ActiveClass="nav-link--active"
+                         Match="NavLinkMatch.Prefix">
+                    Projets
+                </NavLink>
+            </li>
+            <li class="nav-link">
+                <NavLink href="/warhammer" ActiveClass="nav-link--active"
+                         Match="NavLinkMatch.Prefix">
+                    Warhammer
+                </NavLink>
+            </li>
+            <li class="nav-link">
+                <NavLink href="/about" ActiveClass="nav-link--active"
+                         Match="NavLinkMatch.All">
+                    A propos
+                </NavLink>
+            </li>
+        </ul>
+        <div>
+            <a id="kofi" href="https://ko-fi.com/mrsinaf" target="_blank">
+                <img src="@Assets["images/icons/kofi_icon.png"]" alt="Kofi"/>
+            </a>
+            <AuthorizeView>
+                <Authorized>
+                    <a id="admin" href="/admin">
+                        <img src="@Assets["images/icons/domain_icon.png"]" alt="Admin icon"/>
+                    </a>
+                </Authorized>
+            </AuthorizeView>
+        </div>
+    </nav>
+</header>
+
+@Body
+
+<footer>
+    <p>&copy;@DateTime.Now.Year - MrSinaf | PurrVert - Tous droits réservés.</p>
+</footer>
+
+
+<div id="blazor-error-ui" data-nosnippet>
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss">🗙</span>
+</div>

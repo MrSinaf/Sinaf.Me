@@ -1,0 +1,65 @@
+﻿@page "/"
+
+<PageTitle>Accueil</PageTitle>
+
+<main>
+    <section id="presentation">
+        <h1>Mickaël Dancoisne</h1>
+        <p>Votre <span class="femboy-color">femboy</span> développeur en C#!</p>
+        <img class="pixel-art" src="images/poney_walk.png" alt="my poney walking"/>
+        <div>
+            <a href="https://github.com/MrSinaf" target="_blank" class="button">Github</a>
+            <a href="https://reddit.com/u/MrSinaf" target="_blank" class="button">Reddit</a>
+            <a href="https://discord.gg/AzGJ2DavM3" target="_blank" class="button">Discord</a>
+        </div>
+    </section>
+    <section id="github">
+        <h2>Dernier push sur Github╰(*°▽°*)╯</h2>
+        <a href="https://github.com/MrSinaf/@lastPush?.Repository/tree/@lastPush?.Branch"
+           id="github__commit" class="no-style" target="_blank">
+            <div>
+                <h3>@lastPush?.Repository</h3>
+                <p id="github__commit__branch">@lastPush?.Branch</p>
+                @if (lastPush?.Added > 0)
+                {
+                    <p>+@lastPush.Added</p>
+                }
+                @if (lastPush?.Removed > 0)
+                {
+                    <p>-@lastPush?.Removed</p>
+                }
+                @if (lastPush?.Modified > 0)
+                {
+                    <p>~@lastPush?.Modified</p>
+                }
+            </div>
+            @if (lastPush == null)
+            {
+                <p>Chargement du dernier commit...</p>
+            }
+            else
+            {
+                <p>@lastPush.Commit</p>
+            }
+            <img class="pixel-art" src="@Assets["images/github_avatar.png"]" alt="github avatar"/>
+        </a>
+    </section>
+    <section id="projects">
+        <h2>Mes projets notables q(≧▽≦q)</h2>
+        <div id="projects__list">
+            @foreach (var project in projects)
+            {
+                <a class="project"
+                   href="@(
+                         project.Page != null ?
+                             $"/project/{project.Page}" : project.Github != null ?
+                                 $"https://github.com/MrSinaf/{project.Github}" : ""
+                         )"
+                   target="@(project.Page != null ? "_" : "_blank")">
+                    <h3>@project.Name</h3>
+                    <img src="@Assets[$"projects/{project.Id}/icon.png"]" alt="Icon du projet"/>
+                </a>
+            }
+        </div>
+    </section>
+</main>

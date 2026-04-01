@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <base href="/"/>
+    <title>Sinaf.Me</title>
+    <ResourcePreloader/>
+    <link rel="icon" href="@Assets["favicon.ico"]" type="image/x-icon">
+    <link rel="stylesheet" href="@Assets["css/app.css"]"/>
+    <link rel="stylesheet" href="@Assets["Sinaf.Me.styles.css"]"/>
+    <ImportMap/>
+    <HeadOutlet @rendermode="InteractiveServer"/>
+</head>
+
+<body>
+<Routes @rendermode="InteractiveServer"/>
+<ReconnectModal/>
+<script src="@Assets["_framework/blazor.web.js"]"></script>
+<script src="@Assets["js/app.js"]"></script>
+</body>
+
+</html>

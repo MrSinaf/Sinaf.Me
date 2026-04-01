@@ -1,0 +1,141 @@
+﻿@page "/warhammer/clan/{ClanName}"
+
+<PageTitle>Clan : @clan?.Name</PageTitle>
+
+<main>
+    <h1>@clan?.Name</h1>
+    <section id="army">
+        @foreach (var c in characters)
+        {
+            <div @onclick="@(() => Select(c))">
+                <h3>@c.Name</h3>
+                <img src="@Assets[$"warhammer/characters/{c.CharacterId}_0.png"]"
+                     alt="@($"{c.Name} thumbnail")"/>
+            </div>
+        }
+    </section>
+
+    @* 
+        TODO > Résultat pas ouf (et bogué), faut le refaire proprement (╯▔皿▔)╯ 
+        (désactivé pour le moment 
+    *@
+    @if (false)
+    {
+        <div id="hover">
+            <div id="selected">
+                <div id="selected__images" @onclick="ChangeSelection">
+                    @for (var i = 0; i < 3; i++)
+                    {
+                        <img class="@(selectedImage == i ? "show" : string.Empty)"
+                             src="@Assets[$"warhammer/characters/{character.Id}_{i}.png"]"
+                             alt="@character.Name #@i"/>
+                    }
+                </div>
+                <div id="selected__infos">
+                    <a class="button" @onclick="@(() => Select(null))">fermer</a>
+                    <h2>@character.Name</h2>
+                    <p id="selected__infos__description">
+                        @character.Description
+                    </p>
+                    <p id="selected__infos__commentary">
+                        @character.Commentary
+                    </p>
+                    <hr/>
+                    <div id="selected__infos__badges">
+                    <span class="badge">
+                        Créé le @character.CreatedAt.ToString("dd/MM/yyyy")
+                    </span>
+                        @foreach (var clanChar in character.ClanCharacters)
+                        {
+                            <span class="badge">Clan: @clanChar.Clan.Name</span>
+                        }
+                        @foreach (var unitChar in character.UnitCharacters)
+                        {
+                            <span class="badge">Unité: @unitChar.Unit.Name</span>
+                        }
+                    </div>
+                    <div id="selected__infos__stats">
+                        @if (false)
+                        {
+                            <div class="stats">
+                                <table class="stats__table">
+                                    <caption>Bilan personnel</caption>
+                                    <tbody>
+                                    <tr>
+                                        <th>Batailles</th>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Tués</th>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Morts</th>
+                                        <td>0</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="stats">
+                                <table class="stats__table">
+                                    <caption>Performances</caption>
+                                    <tbody>
+                                    <tr>
+                                        <th>Série de victoires</th>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Série de tués</th>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Série de survies</th>
+                                        <td>0</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="stats">
+                                <table class="stats__table">
+                                    <caption>Bilan d'unité</caption>
+                                    <tbody>
+                                    <tr>
+                                        <th>Victoires</th>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Charges ratées</th>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Objectifs sécurisés</th>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Save impossibles réussies</th>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Bataille dans l'ombre</th>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Dommages (effectués / reçu / bloqué)</th>
+                                        <td>0e / 0r / 0b</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <p>Aucune données de bataille disponible</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</main>

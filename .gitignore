@@ -1,0 +1,10 @@
+.idea/
+.vs/
+appsettings.Development.json
+
+[Bb]in/
+[Oo]bj/
+
+wwwroot/blogs/
+wwwroot/projects/
+wwwroot/warhammer/

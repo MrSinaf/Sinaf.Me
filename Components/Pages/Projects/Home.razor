@@ -1,0 +1,45 @@
+﻿@page "/projects"
+
+<PageTitle>Projets</PageTitle>
+
+<main>
+   <h1>Projets</h1>
+   <p>
+      Découvrez ci-dessous tous mes projets, qu'ils soient personnels, professionnels ou
+      open-source.
+   </p>
+   <div>
+      <hr/>
+      <img src="@Assets["images/okay.png"]" alt="okay"/>
+   </div>
+   <section id="projects">
+      @foreach (var project in projects)
+      {
+         <div class="project">
+            @if (File.Exists($"wwwroot/projects/{project.Id}/icon.png"))
+            {
+               <img src="@Assets[$"projects/{project.Id}/icon.png"]" alt="icon"/>
+            }
+            <div class="project__description">
+               <h2>@project.Name</h2>
+               <hr/>
+               <p>@project.Description</p>
+            </div>
+            <div class="project__buttons">
+               @if (project.Page != null)
+               {
+                  <a class="button" href="/project/@project.Page">Page</a>
+               }
+               @if (project.Github != null)
+               {
+                  <a class="button"
+                     href="https://github.com/MrSinaf/@project.Github"
+                     target="_blank">
+                     Github
+                  </a>
+               }
+            </div>
+         </div>
+      }
+   </section>
+</main>

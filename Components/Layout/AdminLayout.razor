@@ -1,0 +1,37 @@
+﻿@inherits LayoutComponentBase
+
+<div id="content">
+    <header>
+        <nav>
+            <ul>
+                <li class="nav-link">
+                    <NavLink href="/admin" ActiveClass="nav-link--active"
+                             Match="NavLinkMatch.All">
+                        <img src="@Assets["images/icons/kofi_icon.png"]" alt="Kofi"/>
+                    </NavLink>
+                </li>
+                <li class="nav-link">
+                    <NavLink href="/warhammer" ActiveClass="nav-link--active"
+                             Match="NavLinkMatch.Prefix">
+                        <img src="@Assets["images/icons/kofi_icon.png"]" alt="Kofi"/>
+                    </NavLink>
+                </li>
+                <li class="nav-link">
+                    <NavLink href="/about" ActiveClass="nav-link--active"
+                             Match="NavLinkMatch.All">
+                        <img src="@Assets["images/icons/kofi_icon.png"]" alt="Kofi"/>
+                    </NavLink>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    @Body
+</div>
+
+
+<div id="blazor-error-ui" data-nosnippet>
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss">🗙</span>
+</div>

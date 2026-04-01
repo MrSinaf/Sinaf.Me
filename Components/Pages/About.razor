@@ -1,0 +1,83 @@
+﻿@page "/About"
+<PageTitle>A propos</PageTitle>
+
+<main>
+    <h1>A propos</h1>
+
+    <section id="me">
+        <img src="images/shy.gif" alt="illustration de Mickaël Dancoisne"/>
+        <div>
+            <h2>Salutations !</h2>
+            <p>
+                Je suis Mickaël Dancoisne, j'ai @ageYears ans, @ageMonths mois et @ageDays jours
+                développeur passionné en Rust et C# .Net.
+            </p>
+            <p>
+                Ce site est à la fois ma vitrine professionnelle et mon donjon personnel. Vous y
+                découvrirez
+                mes projets, mes blogs, mes expériences et peut-être quelques une de mes
+                perversions.
+            </p>
+        </div>
+    </section>
+    <hr/>
+    <section id="description">
+        <img src="@Assets["images/mrsinaf.gif"]" alt="mrsinaf en pixel art"/>
+        <p>
+            Ce site web a été entièrement développé avec Blazor en .NET10 et C#14 par Mickaël
+            Dancoisne.
+        </p>
+        <img src="@Assets["images/purrvert.png"]" alt="purrvert logo"/>
+        <p style="color: orange">
+            CE PROJET N'EST PAS FINI<br/>
+            Alors soyez zog patient avant de tout kasser!
+        </p>
+    </section>
+    <hr/>
+    <section id="credits">
+        <p>
+            Pour divers raisons, j'ai utilisé quelques dépendances, voici une liste complète :
+        </p>
+        <ul>
+            <li>
+                <a href="https://ko-fi.com/s/d5cc6c97b6" target="_blank">
+                    Social Connect Icon (pixel art)</a> - par lunggolfs
+            </li>
+        </ul>
+    </section>
+</main>
+
+@code {
+
+    private int ageYears;
+    private int ageMonths;
+    private int ageDays;
+
+    protected override void OnInitialized()
+    {
+        var today = DateTime.Now;
+        var birth = new DateTime(2001, 04, 25);
+
+        ageYears = today.Year - birth.Year;
+        ageMonths = today.Month - birth.Month;
+        ageDays = today.Day - birth.Day;
+
+        if (ageDays < 0)
+        {
+            var previousMonth = today.AddMonths(-1);
+            var daysInPreviousMonth = DateTime.DaysInMonth(
+                previousMonth.Year,
+                previousMonth.Month
+            );
+            ageDays += daysInPreviousMonth;
+            ageMonths--;
+        }
+
+        if (ageMonths < 0)
+        {
+            ageMonths += 12;
+            ageYears--;
+        }
+    }
+
+}
