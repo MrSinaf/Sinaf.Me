@@ -18,7 +18,7 @@
          <div class="project">
             @if (File.Exists($"wwwroot/projects/{project.Id}/icon.png"))
             {
-               <img src="@Assets[$"projects/{project.Id}/icon.png"]" alt="icon"/>
+               <img src="@Assets[$"projects/{project.UniqueName}/icon.png"]" alt="icon"/>
             }
             <div class="project__description">
                <h2>@project.Name</h2>
@@ -26,9 +26,9 @@
                <p>@project.Description</p>
             </div>
             <div class="project__buttons">
-               @if (project.Page != null)
+               @if (project.HasPage)
                {
-                  <a class="button" href="/project/@project.Page">Page</a>
+                  <a class="button" href="/project/@project.UniqueName">Page</a>
                }
                @if (project.Github != null)
                {

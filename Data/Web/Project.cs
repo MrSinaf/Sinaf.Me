@@ -7,11 +7,13 @@ public partial class Project
 {
     public uint Id { get; set; }
 
+    public string UniqueName { get; set; } = null!;
+
     public string Name { get; set; } = null!;
 
     public string Description { get; set; } = null!;
 
-    public string? Page { get; set; }
+    public bool HasPage { get; set; }
 
     public string? Github { get; set; }
 

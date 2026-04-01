@@ -50,6 +50,8 @@ public partial class WebDbContext : DbContext
 
             entity.ToTable("projects");
 
+            entity.HasIndex(e => e.UniqueName, "projects_pk").IsUnique();
+
             entity.Property(e => e.Id)
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("id");
@@ -63,17 +65,19 @@ public partial class WebDbContext : DbContext
                 .HasColumnName("github")
                 .UseCollation("utf8mb3_uca1400_ai_ci")
                 .HasCharSet("utf8mb3");
+            entity.Property(e => e.HasPage).HasColumnName("has_page");
             entity.Property(e => e.Name)
-                .HasMaxLength(64)
+                .HasMaxLength(32)
                 .HasColumnName("name")
                 .UseCollation("utf8mb3_uca1400_ai_ci")
                 .HasCharSet("utf8mb3");
             entity.Property(e => e.Order)
+                .HasDefaultValueSql("'1'")
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("order");
-            entity.Property(e => e.Page)
-                .HasMaxLength(64)
-                .HasColumnName("page")
+            entity.Property(e => e.UniqueName)
+                .HasMaxLength(32)
+                .HasColumnName("unique_name")
                 .UseCollation("utf8mb3_uca1400_ai_ci")
                 .HasCharSet("utf8mb3");
         });

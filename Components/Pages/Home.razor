@@ -51,13 +51,14 @@
             {
                 <a class="project"
                    href="@(
-                         project.Page != null ?
-                             $"/project/{project.Page}" : project.Github != null ?
+                         project.HasPage ?
+                             $"/project/{project.UniqueName}" : project.Github != null ?
                                  $"https://github.com/MrSinaf/{project.Github}" : ""
                          )"
-                   target="@(project.Page != null ? "_" : "_blank")">
+                   target="@(project.HasPage ? "_" : "_blank")">
                     <h3>@project.Name</h3>
-                    <img src="@Assets[$"projects/{project.Id}/icon.png"]" alt="Icon du projet"/>
+                    <img src="@Assets[$"projects/{project.UniqueName}/icon.png"]" 
+                         alt="Icon du projet"/>
                 </a>
             }
         </div>
