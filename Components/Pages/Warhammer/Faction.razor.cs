@@ -8,7 +8,7 @@ namespace Sinaf.Me.Components.Pages.Warhammer;
 public partial class Faction : ComponentBase
 {
 	[Inject] private NavigationManager Navigation { get; set; } = null!;
-	[Parameter] public string ClanName { get; set; }
+	[Parameter] public string ClanName { get; set; } = null!;
 	
 	private int selectedImage;
 	
@@ -54,12 +54,4 @@ public partial class Faction : ComponentBase
 		selectedImage = ++selectedImage % 3;
 		StateHasChanged();
 	}
-}
-
-public class Skaven
-{
-	public uint Id { get; set; }
-	public string Name { get; set; }
-	public string Description { get; set; }
-	public DateTime CreatedAt { get; set; }
 }
