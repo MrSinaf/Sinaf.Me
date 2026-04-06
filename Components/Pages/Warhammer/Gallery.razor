@@ -1,0 +1,24 @@
+﻿@page "/warhammer/gallery"
+
+<main>
+    <h1>Ma Galerie</h1>
+    <p>Tous mes personnages de l'univers Warhammer que j'ai pu peindre réunient ici!</p>
+    <section>
+        @foreach (var id in characters)
+        {
+            <div>
+                <img src="@Assets[$"warhammer/characters/{id}_0.png"]"
+                     alt="@($"{id} thumbnail")"/>
+            </div>
+        }
+    </section>
+    
+    <div>
+        @if (hasMore)
+        {
+            <button class="button" @onclick="LoadMoreAsync" disabled="@loading">
+                @(loading ? "Chargement..." : "Charger plus")
+            </button>
+        }
+    </div>
+</main>
