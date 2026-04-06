@@ -18,10 +18,12 @@ public class Auth : Controller
 		var form = await Request.ReadFormAsync();
 		var password = form["password"].ToString();
 		
+		string? ip = Request.Headers["X-Forwarded-For"];
 		await using var context = new WebDbContext();
 		var loginAttemp = new LoginAttemp
 		{
-			Ip = HttpContext.Connection.RemoteIpAddress?.ToString() ?? string.Empty,
+			Ip = ip ?? HttpContext.Connection.RemoteIpAddress?.ToString() ?? 
+				string.Empty,
 			Date = DateTime.Now
 		};
 		
