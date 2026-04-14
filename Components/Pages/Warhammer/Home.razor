@@ -1,39 +1,17 @@
-﻿@* @page "/warhammer" *@
-@using Microsoft.EntityFrameworkCore
-@using Sinaf.Me.Data
-@using Sinaf.Me.Data.Warhammer
-
+﻿@page "/warhammer"
 <PageTitle>Warhammer</PageTitle>
 
 <main>
     <h1>Warhammer</h1>
     <p>
         Au début de l'année 2026, j'ai commencé à découvrir le hobby qu'est Warhammer ヽ（≧□≦）ノ.
-        <br/>Je vous partage alors ici, mes créations!
+        <br/>Je vous partage alors ici, mon fanatisme pour 40k et AoS!
     </p>
 
-    <section id="clans">
-        @foreach (var clan in clans)
-        {
-            <a href="/warhammer/clan/@clan.Name.ToLower()" class="clan no-style">
-                <img src="warhammer/clans/@(clan.ClanId)_icon.png"
-                     alt="icon @clan.Name"/>
-                <h3>@clan.Name</h3>
-                <p class="clan__rapport">@clan.CharactersN personnages | 0 batailles</p>
-                <p class="clan__faction">@clan.Faction</p>
-            </a>
-        }
-    </section>
+    <div>
+        <h2><a href="/warhammer/armies">Armees</a></h2>
+        <h2><a href="/warhammer/battles">Batailles</a></h2>
+        <h2><a href="/warhammer/gallery">Galerie</a></h2>
+        <h2><a href="/warhammer/citations">Citations</a></h2>
+    </div>
 </main>
-
-@code {
-
-    private ListingClan[] clans = [];
-
-    protected override async Task OnInitializedAsync()
-    {
-        await using var context = new WarhammerDbContext();
-        clans = await context.ListingClans.ToArrayAsync();
-    }
-
-}

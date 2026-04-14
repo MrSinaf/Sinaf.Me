@@ -8,10 +8,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="wwwroot\fonts\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <_ContentIncludedByDefault Remove="Components\Components\ImageViewer.razor" />
       <_ContentIncludedByDefault Remove="Components\Common\ImageLoader.razor" />
       <_ContentIncludedByDefault Remove="Components\Pages\Projects\Home.razor" />

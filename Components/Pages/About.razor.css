@@ -76,6 +76,12 @@ hr {
     list-style-type: none;
 }
 
+#credits > ul {
+    text-align: left;
+    width: fit-content;
+    margin: auto;
+}
+
 @media (max-width: 550px) {
 
     #me > img {

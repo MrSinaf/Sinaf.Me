@@ -4,6 +4,12 @@
     font-weight: bold;
 }
 
+@font-face {
+    font-family: 'Orc Horde';
+    src: url('../fonts/orc-horde-bb.ttf');
+    font-weight: bold;
+}
+
 * {
     --background-color: #021a1a;
     --background-color-secondary: #042222;
