@@ -8,13 +8,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <_ContentIncludedByDefault Remove="Components\Components\ImageViewer.razor" />
-      <_ContentIncludedByDefault Remove="Components\Common\ImageLoader.razor" />
-      <_ContentIncludedByDefault Remove="Components\Pages\Projects\Home.razor" />
-      <_ContentIncludedByDefault Remove="wwwroot\projects\sinafproduction\icon.png" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.14" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.14">
         <PrivateAssets>all</PrivateAssets>

@@ -9,8 +9,9 @@
         <div>
             <h2>Salutations !</h2>
             <p>
-                Je suis Mickaël Dancoisne, j'ai @ageYears ans, @ageMonths mois et @ageDays jours
-                développeur passionné en Rust et C# .Net.
+                Je suis Mickaël Dancoisne, j'aurais @nextAge ans, dans @remainingMonths mois et
+                @remainingDays jour@(remainingDays > 1 ? "s" : "") développeur passionné en Rust et
+                C# .Net.
             </p>
             <p>
                 Ce site est à la fois ma vitrine professionnelle et mon donjon personnel. Vous y
@@ -53,35 +54,33 @@
 
 @code {
 
-    private int ageYears;
-    private int ageMonths;
-    private int ageDays;
+    private int nextAge;
+    private int remainingMonths;
+    private int remainingDays;
 
     protected override void OnInitialized()
     {
         var today = DateTime.Now;
         var birth = new DateTime(2001, 04, 25);
+        var nextBirthday = new DateTime(today.Year, birth.Month, birth.Day);
 
-        ageYears = today.Year - birth.Year;
-        ageMonths = today.Month - birth.Month;
-        ageDays = today.Day - birth.Day;
-
-        if (ageDays < 0)
+        if (nextBirthday < today)
         {
-            var previousMonth = today.AddMonths(-1);
-            var daysInPreviousMonth = DateTime.DaysInMonth(
-                previousMonth.Year,
-                previousMonth.Month
-            );
-            ageDays += daysInPreviousMonth;
-            ageMonths--;
+            nextBirthday = nextBirthday.AddYears(1);
         }
 
-        if (ageMonths < 0)
+        nextAge = nextBirthday.Year - birth.Year;
+
+        var tempDate = today;
+
+        remainingMonths = 0;
+        while (tempDate.AddMonths(1) <= nextBirthday)
         {
-            ageMonths += 12;
-            ageYears--;
+            tempDate = tempDate.AddMonths(1);
+            remainingMonths++;
         }
+
+        remainingDays = (nextBirthday - tempDate).Days + 1;
     }
 
 }
