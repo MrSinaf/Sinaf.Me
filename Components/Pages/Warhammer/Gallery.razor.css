@@ -1,54 +1,41 @@
-﻿@keyframes div-in {
-    0% {
-        scale: 0 1;
-    }
-    100% {
-        scale: 1;
-    }
-}
-
+﻿
 section {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
     gap: 10px;
     transition: all 0.1s linear;
-}
+    
+    > a {
+        position: relative;
+        padding: 10px;
+        min-width: 60px;
+        border-radius: 5px;
+        background: var(--panel-color);
+        transition: all 0.1s linear;
+        animation: div-in 0.1s;
 
-section > div {
-    position: relative;
-    padding: 10px;
-    min-width: 60px;
-    border-radius: 5px;
-    background: var(--panel-color);
-    transition: all 0.1s linear;
-    animation: div-in 0.1s;
-}
+        h3 {
+            color: var(--text-color);
+            position: absolute;
+            bottom: 0;
+            z-index: 1;
+        }
 
-section > div:hover {
-    cursor: pointer;
-}
+        > img {
+            max-height: 320px;
+            height: 100%;
+            width: 100%;
+            transition: all 0.1s linear;
+        }
+    }
 
-section > div > h3 {
-    color: var(--text-color);
-    position: absolute;
-    bottom: 0;
-    z-index: 1;
-}
+    > a:hover {
+        cursor: pointer;
 
-section > div > ::deep img {
-    max-height: 220px;
-    height: 100%;
-    width: 100%;
-    transition: all 0.1s linear;
-}
-
-section > div:hover > ::deep img {
-    filter: brightness(1.1);
-    scale: 1.1;
-}
-
-main > div {
-    text-align: center;
-    margin: 30px auto;
+        > img {
+            filter: brightness(1.1);
+            scale: 0.95;
+        }
+    }
 }

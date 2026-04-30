@@ -1,0 +1,55 @@
+﻿section {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: all 0.1s linear;
+
+    > figure {
+        position: relative;
+        width: 100%;
+        margin: 0;
+        padding: 10px 10px;
+        border-radius: 5px;
+        background: var(--background-color-secondary);
+        transition: all 0.1s linear;
+        animation: div-in 0.1s;
+        overflow: hidden;
+    }
+
+    > figure::before {
+        content: "“";
+        position: absolute;
+        top: -5px;
+        left: 0;
+        font-size: 7rem;
+        line-height: 1;
+        opacity: 0.12;
+        color: var(--text-color);
+        pointer-events: none;
+    }
+
+    blockquote {
+        position: relative;
+        margin: 0;
+        color: var(--text-color);
+        font-size: 0.9rem;
+        line-height: 1.6;
+        font-style: italic;
+        z-index: 1;
+    }
+
+    figcaption {
+        margin-top: 16px;
+        padding-top: 10px;
+        border-top: 1px solid color-mix(in srgb, var(--text-color) 25%, transparent);
+        color: color-mix(in srgb, var(--text-color) 75%, transparent);
+        font-size: 0.9rem;
+        text-align: right;
+    }
+
+    cite {
+        color: var(--text-color);
+        font-style: normal;
+        font-weight: bold;
+    }
+}
