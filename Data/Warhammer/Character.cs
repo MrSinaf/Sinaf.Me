@@ -1,4 +1,7 @@
-﻿namespace Sinaf.Me.Data.Warhammer;
+﻿using System;
+using System.Collections.Generic;
+
+namespace Sinaf.Me.Data.Warhammer;
 
 public partial class Character
 {
@@ -12,7 +15,5 @@ public partial class Character
 
     public DateTime CreatedAt { get; set; }
 
-    public virtual ICollection<ClanCharacter> ClanCharacters { get; set; } = new List<ClanCharacter>();
-
-    public virtual ICollection<UnitCharacter> UnitCharacters { get; set; } = new List<UnitCharacter>();
+    public DateTime? UpdatedAt { get; set; }
 }

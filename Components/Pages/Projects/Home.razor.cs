@@ -12,6 +12,8 @@ public partial class Home : ComponentBase
 	protected override async Task OnInitializedAsync()
 	{
 		await using var context = new WebDbContext();
-		projects = await context.Projects.OrderByDescending(x => x.Order).ToArrayAsync();
+		projects = await context.Projects.Include(x => x.ProjectLinks)
+								.OrderByDescending(x => x.Order)
+								.ToArrayAsync();
 	}
 }

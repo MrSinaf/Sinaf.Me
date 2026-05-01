@@ -16,6 +16,8 @@ public partial class WebDbContext : DbContext
 
     public virtual DbSet<Project> Projects { get; set; }
 
+    public virtual DbSet<ProjectLink> ProjectLinks { get; set; }
+
     public virtual DbSet<ProjectRepository> ProjectRepositories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -60,12 +62,6 @@ public partial class WebDbContext : DbContext
                 .HasColumnName("description")
                 .UseCollation("utf8mb3_uca1400_ai_ci")
                 .HasCharSet("utf8mb3");
-            entity.Property(e => e.Github)
-                .HasMaxLength(128)
-                .HasColumnName("github")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
-            entity.Property(e => e.HasPage).HasColumnName("has_page");
             entity.Property(e => e.Name)
                 .HasMaxLength(32)
                 .HasColumnName("name")
@@ -80,6 +76,40 @@ public partial class WebDbContext : DbContext
                 .HasColumnName("unique_name")
                 .UseCollation("utf8mb3_uca1400_ai_ci")
                 .HasCharSet("utf8mb3");
+        });
+
+        modelBuilder.Entity<ProjectLink>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("project__links");
+
+            entity.HasIndex(e => e.ProjectId, "project__links_projects_id_fk");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("id");
+            entity.Property(e => e.IsIntern).HasColumnName("isIntern");
+            entity.Property(e => e.Name)
+                .HasMaxLength(32)
+                .HasColumnName("name")
+                .UseCollation("utf8mb3_uca1400_ai_ci")
+                .HasCharSet("utf8mb3");
+            entity.Property(e => e.Priority)
+                .HasColumnType("tinyint(3) unsigned")
+                .HasColumnName("priority");
+            entity.Property(e => e.ProjectId)
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("project_id");
+            entity.Property(e => e.Url)
+                .HasMaxLength(256)
+                .HasColumnName("url")
+                .UseCollation("utf8mb3_uca1400_ai_ci")
+                .HasCharSet("utf8mb3");
+
+            entity.HasOne(d => d.Project).WithMany(p => p.ProjectLinks)
+                .HasForeignKey(d => d.ProjectId)
+                .HasConstraintName("project__links_projects_id_fk");
         });
 
         modelBuilder.Entity<ProjectRepository>(entity =>

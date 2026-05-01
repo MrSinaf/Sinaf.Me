@@ -15,6 +15,7 @@ public partial class Home
 		lastPush = await context.ProjectRepositories
 										 .OrderByDescending(x => x.Update)
 										 .FirstAsync();
-		projects = await context.Projects.OrderByDescending(x => x.Order).Take(3).ToArrayAsync();
+		projects = await context.Projects.Include(x => x.ProjectLinks)
+								.OrderByDescending(x => x.Order).Take(3).ToArrayAsync();
 	}
 }

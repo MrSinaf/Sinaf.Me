@@ -49,17 +49,27 @@
         <div id="projects__list">
             @foreach (var project in projects)
             {
-                <a class="project"
-                   href="@(
-                         project.HasPage ?
-                             $"/project/{project.UniqueName}" : project.Github != null ?
-                                 $"https://github.com/MrSinaf/{project.Github}" : ""
-                         )"
-                   target="@(project.HasPage ? "_" : "_blank")">
-                    <h3>@project.Name</h3>
-                    <img src="@Assets[$"projects/{project.UniqueName}/icon.png"]" 
-                         alt="Icon du projet"/>
-                </a>
+                var link = project.ProjectLinks.OrderByDescending(x => x.Priority).FirstOrDefault();
+
+                @if (link != null)
+                {
+                    <a class="project"
+                       href="@link.Url"
+                       target="@(link.IsIntern ? "_" : "_blank")">
+                        <h3>@project.Name</h3>
+                        <img src="@Assets[$"projects/{project.UniqueName}/icon.png"]"
+                             alt="Icon du projet"/>
+                    </a>
+                }
+                else
+                {
+                    
+                    <a class="project">
+                        <h3>@project.Name</h3>
+                        <img src="@Assets[$"projects/{project.UniqueName}/icon.png"]"
+                             alt="Icon du projet"/>
+                    </a>
+                }
             }
         </div>
     </section>

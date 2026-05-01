@@ -16,7 +16,7 @@
       @foreach (var project in projects)
       {
          <div class="project">
-            @if (File.Exists($"wwwroot/projects/{project.Id}/icon.png"))
+            @if (File.Exists($"wwwroot/projects/{project.UniqueName}/icon.png"))
             {
                <img src="@Assets[$"projects/{project.UniqueName}/icon.png"]" alt="icon"/>
             }
@@ -25,17 +25,11 @@
                <hr/>
                <p>@project.Description</p>
             </div>
-            <div class="project__buttons">
-               @if (project.HasPage)
+            <div class="project__links">
+               @foreach (var link in project.ProjectLinks.OrderByDescending(x => x.Priority))
                {
-                  <a class="button" href="/project/@project.UniqueName">Page</a>
-               }
-               @if (project.Github != null)
-               {
-                  <a class="button"
-                     href="https://github.com/MrSinaf/@project.Github"
-                     target="_blank">
-                     Github
+                  <a class="button" href="@link.Url" target="@(link.IsIntern ? "_self" : "_blank")">
+                     @link.Name
                   </a>
                }
             </div>

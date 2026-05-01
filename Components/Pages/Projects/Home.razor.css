@@ -68,7 +68,7 @@ main > div > img {
     word-wrap: anywhere;
 }
 
-.project__buttons {
+.project__links {
     display: flex;
     flex-direction: column;
     gap: 5px;
