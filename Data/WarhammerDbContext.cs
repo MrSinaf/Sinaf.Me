@@ -14,6 +14,8 @@ public partial class WarhammerDbContext : DbContext
 
     public virtual DbSet<Character> Characters { get; set; }
 
+    public virtual DbSet<Citation> Citations { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
@@ -50,6 +52,27 @@ public partial class WarhammerDbContext : DbContext
             entity.Property(e => e.UpdatedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("updated_at");
+        });
+
+        modelBuilder.Entity<Citation>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("citations");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("id");
+            entity.Property(e => e.Content)
+                .HasMaxLength(528)
+                .HasColumnName("content")
+                .UseCollation("utf8mb3_uca1400_ai_ci")
+                .HasCharSet("utf8mb3");
+            entity.Property(e => e.Source)
+                .HasMaxLength(48)
+                .HasColumnName("source")
+                .UseCollation("utf8mb3_uca1400_ai_ci")
+                .HasCharSet("utf8mb3");
         });
 
         OnModelCreatingPartial(modelBuilder);
