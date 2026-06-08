@@ -7,13 +7,30 @@
         (¬‿¬)!
     </p>
     <section>
-        @foreach (var id in characters)
+        @foreach (var c in characters)
         {
-            <a>
-                <img src="@Assets[$"warhammer/characters/{id}_thumbnail.png"]"
-                     loading="lazy"
-                     alt="@($"{id} thumbnail")"/>
+            <a class="item" href="@c.GetUrlImage()" target="_blank">
+                <img
+                    src="@c.GetUrlThumbnail()"
+                    loading="lazy"
+                    alt="@c.Name"
+                    onload="setSize(this)"/>
             </a>
         }
     </section>
 </main>
+
+<script>
+    function setSize(img) {
+        const item = img.closest('.item');
+        const gridCellSize = 192;
+        const gridSizeX = img.naturalWidth / gridCellSize;
+        const gridSizeY = img.naturalHeight / gridCellSize;
+
+        item.style.setProperty('--grid-size-x--f', gridSizeX);
+        item.style.setProperty('--grid-size-y--f', gridSizeY);
+
+        item.style.setProperty('--grid-size-x', Math.max(1, Math.ceil(gridSizeX)));
+        item.style.setProperty('--grid-size-y', Math.max(1, Math.ceil(gridSizeY)));
+    }
+</script>
