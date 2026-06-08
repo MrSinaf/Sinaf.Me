@@ -1,4 +1,7 @@
 ﻿@page "/warhammer/gallery"
+@using Microsoft.EntityFrameworkCore
+@using Sinaf.Me.Data
+@using Sinaf.Me.Data.Warhammer
 
 <main>
     <h1>Ma Galerie</h1>
@@ -34,3 +37,23 @@
         item.style.setProperty('--grid-size-y', Math.max(1, Math.ceil(gridSizeY)));
     }
 </script>
+
+@code {
+
+    private Character[] characters = [];
+	
+    protected override async Task OnInitializedAsync()
+    {
+        await using var context = new WarhammerDbContext();
+        characters = await context.Characters
+                                  .OrderByDescending(x => x.Id)
+                                  .Select(x => new Character
+                                  {
+                                      Id = x.Id,
+                                      Name = x.Name,
+                                      UpdatedAt = x.UpdatedAt
+                                  })
+                                  .ToArrayAsync();
+    }
+
+}
