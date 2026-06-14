@@ -15,6 +15,12 @@ public partial class Character
 
     public string? Commentary { get; set; }
 
+    public int ThumbnailX { get; set; }
+
+    public int ThumbnailY { get; set; }
+
+    public byte ThumbnailS { get; set; }
+
     public DateTime CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }

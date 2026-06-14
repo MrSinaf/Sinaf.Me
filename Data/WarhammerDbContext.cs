@@ -24,6 +24,8 @@ public partial class WarhammerDbContext : DbContext
 
     public virtual DbSet<Character> Characters { get; set; }
 
+    public virtual DbSet<CharacterDetail> CharacterDetails { get; set; }
+
     public virtual DbSet<Citation> Citations { get; set; }
 
     public virtual DbSet<Clan> Clans { get; set; }
@@ -249,6 +251,16 @@ public partial class WarhammerDbContext : DbContext
                 .HasColumnName("name")
                 .UseCollation("utf8mb3_uca1400_ai_ci")
                 .HasCharSet("utf8mb3");
+            entity.Property(e => e.ThumbnailS)
+                .HasDefaultValueSql("'100'")
+                .HasColumnType("tinyint(3) unsigned")
+                .HasColumnName("thumbnail_s");
+            entity.Property(e => e.ThumbnailX)
+                .HasColumnType("int(11)")
+                .HasColumnName("thumbnail_x");
+            entity.Property(e => e.ThumbnailY)
+                .HasColumnType("int(11)")
+                .HasColumnName("thumbnail_y");
             entity.Property(e => e.UpdatedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("updated_at");
@@ -256,6 +268,87 @@ public partial class WarhammerDbContext : DbContext
             entity.HasOne(d => d.Clan).WithMany(p => p.Characters)
                 .HasForeignKey(d => d.ClanId)
                 .HasConstraintName("characters_clans_id_fk");
+        });
+
+        modelBuilder.Entity<CharacterDetail>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("character-details");
+
+            entity.Property(e => e.ClanId)
+                .HasDefaultValueSql("'0'")
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("clan_id");
+            entity.Property(e => e.ClanName)
+                .HasMaxLength(64)
+                .HasColumnName("clan_name")
+                .UseCollation("utf8mb3_uca1400_ai_ci")
+                .HasCharSet("utf8mb3");
+            entity.Property(e => e.Commentary)
+                .HasMaxLength(256)
+                .HasColumnName("commentary")
+                .UseCollation("utf8mb3_uca1400_ai_ci")
+                .HasCharSet("utf8mb3");
+            entity.Property(e => e.CreatedAt)
+                .HasColumnType("datetime")
+                .HasColumnName("created_at");
+            entity.Property(e => e.Description)
+                .HasMaxLength(512)
+                .HasColumnName("description")
+                .UseCollation("utf8mb3_uca1400_ai_ci")
+                .HasCharSet("utf8mb3");
+            entity.Property(e => e.Id)
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("id");
+            entity.Property(e => e.Name)
+                .HasMaxLength(64)
+                .HasColumnName("name")
+                .UseCollation("utf8mb3_uca1400_ai_ci")
+                .HasCharSet("utf8mb3");
+            entity.Property(e => e.ThumbnailS)
+                .HasDefaultValueSql("'100'")
+                .HasColumnType("tinyint(3) unsigned")
+                .HasColumnName("thumbnail_s");
+            entity.Property(e => e.ThumbnailX)
+                .HasColumnType("int(11)")
+                .HasColumnName("thumbnail_x");
+            entity.Property(e => e.ThumbnailY)
+                .HasColumnType("int(11)")
+                .HasColumnName("thumbnail_y");
+            entity.Property(e => e.TotalBattles)
+                .HasColumnType("bigint(21)")
+                .HasColumnName("total_battles");
+            entity.Property(e => e.TotalDamageBlocked)
+                .HasPrecision(32)
+                .HasColumnName("total_damage_blocked");
+            entity.Property(e => e.TotalDamageDone)
+                .HasPrecision(32)
+                .HasColumnName("total_damage_done");
+            entity.Property(e => e.TotalDamageTaken)
+                .HasPrecision(32)
+                .HasColumnName("total_damage_taken");
+            entity.Property(e => e.TotalDeaths)
+                .HasPrecision(22)
+                .HasColumnName("total_deaths");
+            entity.Property(e => e.TotalFailedCharges)
+                .HasPrecision(32)
+                .HasColumnName("total_failed_charges");
+            entity.Property(e => e.TotalImpossibleSaves)
+                .HasPrecision(32)
+                .HasColumnName("total_impossible_saves");
+            entity.Property(e => e.TotalKillsParticipating)
+                .HasPrecision(32)
+                .HasColumnName("total_kills_participating");
+            entity.Property(e => e.TotalObjectives)
+                .HasPrecision(32)
+                .HasColumnName("total_objectives");
+            entity.Property(e => e.TotalUnitKills)
+                .HasPrecision(32)
+                .HasColumnName("total_unit_kills");
+            entity.Property(e => e.UpdatedAt)
+                .HasColumnType("datetime")
+                .HasColumnName("updated_at");
         });
 
         modelBuilder.Entity<Citation>(entity =>

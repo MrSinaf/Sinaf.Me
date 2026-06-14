@@ -21,7 +21,7 @@
     --text-color: #eff5f5;
     --max-page-width: 1600px;
     --color-green-dark: rgba(3, 96, 74, 0.20);
-    --color-green-light: rgba(3, 96, 74, 0.35);
+    --color-green-light: rgb(0 255 197 / 0.35);
     font-family: 'JetBrains Mono', monospace;
 }
 
@@ -184,6 +184,11 @@ button {
 .button:hover {
     background: var(--button-color-background--hover);
     cursor: pointer;
+}
+
+span.sub {
+    text-transform: uppercase;
+    opacity: 60%;
 }
 
 /* LOADER --------------------------------------------------------------------------------------- */
