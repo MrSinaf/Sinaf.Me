@@ -12,7 +12,7 @@
     <section>
         @foreach (var c in characters)
         {
-            <a class="item" href="@c.GetUrlImage()" target="_blank">
+            <a class="item" href="/warhammer/characters/@c.Id">
                 <img
                     src="@c.GetUrlThumbnail()"
                     loading="lazy"
