@@ -45,34 +45,37 @@
             <img class="pixel-art" src="@Assets["images/github_avatar.png"]" alt="github avatar"/>
         </a>
     </section>
-    
+
     @if (steamProfil != null)
     {
         <section id="steam">
             <h2>(*/ω＼*) Activité Steam</h2>
-            <div>
-                <img src="@steamProfil.Value.urlIcon" alt="steam avatar"/>
+            <a href="https://steamcommunity.com/id/mrsinaf/" target="_blank">
                 <div>
-                    <span id="@steamProfil.Value.statusType">@steamProfil.Value.status</span>
-                    @if (currentSteamGameInfos != null)
-                    {
-                        <div>
-                            <img src="@currentSteamGameInfos.Value.icon" alt="steam game icon"/>
+
+                    <img src="@steamProfil.Value.urlIcon" alt="steam avatar"/>
+                    <div>
+                        <span id="@steamProfil.Value.statusType">@steamProfil.Value.status</span>
+                        @if (currentSteamGameInfos != null)
+                        {
                             <div>
-                                <p>@currentSteamGameInfos.Value.name</p>
-                                <p>@currentSteamGameInfos.Value.hours</p>
+                                <img src="@currentSteamGameInfos.Value.icon" alt="steam game icon"/>
+                                <div>
+                                    <p>@currentSteamGameInfos.Value.name</p>
+                                    <p>@currentSteamGameInfos.Value.hours</p>
+                                </div>
                             </div>
-                        </div>
-                    }
-                    else if (presence != null)
-                    {
-                        <p>@presence.Libelle</p>
-                    }
+                        }
+                        else if (presence != null)
+                        {
+                            <p>@presence.Libelle</p>
+                        }
+                    </div>
                 </div>
-            </div>
+            </a>
         </section>
     }
-    
+
     <section id="projects">
         <h2>Mes projets notables q(≧▽≦q)</h2>
         <div id="projects__list">

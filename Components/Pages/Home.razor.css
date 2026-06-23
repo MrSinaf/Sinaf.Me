@@ -120,65 +120,81 @@
         margin: 0;
     }
 
-    > div {
-        background: var(--background-color-secondary);
-        width: 650px;
-        padding: 10px;
-        border-radius: 10px;
-        display: flex;
-        gap: 10px;
-        margin: 0 10px;
-
-        #online {
-            color: #55a0c9
-        }
-        #offline {
-            color: #626262
-        }
-        #busy {
-            color: #ab4a4a
-        }
-        #away {
-            color: #ecdb00
-        }
-        #snooze {
-            color: #ac52d7
-        }
-        #unknown {
-            color: #000000
-        }
+    > a {
+        text-decoration: none;
+        color: inherit;
         
-        #ingame {
-            color: #4aab91
-        }
-
-        > img {
-            width: 64px;
-            height: 64px;
-            border-radius: 5px;
-        }
-
         > div {
+            transition: all 0.2s ease-in-out;
+            background: var(--background-color-secondary);
+            width: 650px;
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            gap: 10px;
+            margin: 0 10px;
+
+            #online {
+                color: #55a0c9
+            }
+
+            #offline {
+                color: #626262
+            }
+
+            #busy {
+                color: #ab4a4a
+            }
+
+            #away {
+                color: #ecdb00
+            }
+
+            #snooze {
+                color: #ac52d7
+            }
+
+            #unknown {
+                color: #000000
+            }
+
+            #ingame {
+                color: #4aab91
+            }
+
+            > img {
+                width: 64px;
+                height: 64px;
+                border-radius: 5px;
+            }
 
             > div {
-                display: flex;
-                gap: 10px;
-                margin-top: 5px;
-                align-items: center;
-
-                > img {
-                    width: 32px;
-                    height: 32px;
-                }
 
                 > div {
-                    p:last-child {
-                        font-size: 0.7rem;
-                        color: var(--accent-color);
+                    display: flex;
+                    gap: 10px;
+                    margin-top: 5px;
+                    align-items: center;
+
+                    > img {
+                        width: 32px;
+                        height: 32px;
+                    }
+
+                    > div {
+                        p:last-child {
+                            font-size: 0.7rem;
+                            color: var(--accent-color);
+                        }
                     }
                 }
             }
         }
+    }
+
+    > a > div:hover {
+        cursor: pointer;
+        transform: scale(1.05);
     }
 }
 
@@ -301,7 +317,7 @@
             bottom: -100px;
         }
     }
-    
+
     #github__commit {
         padding: 0.5rem;
 

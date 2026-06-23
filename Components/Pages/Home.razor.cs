@@ -17,44 +17,52 @@ public partial class Home
 	
 	protected override async Task OnInitializedAsync()
 	{
-		var webInterfaceFactory = new SteamWebInterfaceFactory("8E1A35F9D5533AAE3CD66A8E68ABF120");
-		
-		var steamInterface = webInterfaceFactory
-				.CreateSteamWebInterface<SteamUser>(new HttpClient());
-		var steamSummary = (await steamInterface.GetPlayerSummaryAsync(76561199117557684)).Data;
-		
-		if (!string.IsNullOrEmpty(steamSummary.PlayingGameName))
+		try
 		{
-			var steamPlayerInterface = webInterfaceFactory.CreateSteamWebInterface<PlayerService>();
-			var games = await steamPlayerInterface.GetOwnedGamesAsync(
-				76561199117557684,
-				includeAppInfo: true,
-				includeFreeGames: true,
-				appIdsToFilter: [uint.Parse(steamSummary.PlayingGameId)]
-			);
+			var webInterfaceFactory = new SteamWebInterfaceFactory("8E1A35F9D5533AAE3CD66A8E68ABF120");
 			
-			var game = games.Data.OwnedGames.First();
-			var hours = game.PlaytimeForever.TotalHours;
-			var minutes = game.PlaytimeForever.Minutes;
-			currentSteamGameInfos = (
-				game.Name,
-				"https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/" +
-				$"{game.AppId}/{game.ImgIconUrl}.jpg",
-				$"Temps de jeu : {hours:0} heure{(hours > 1 ? "s" : "")} et " +
-				$"{minutes:0} minute{(minutes > 1 ? "s" : "")} "
-			);
+			var steamInterface = webInterfaceFactory
+					.CreateSteamWebInterface<SteamUser>(new HttpClient());
+			var steamSummary = (await steamInterface.GetPlayerSummaryAsync(76561199117557684)).Data;
+			
+			if (!string.IsNullOrEmpty(steamSummary.PlayingGameName))
+			{
+				var steamPlayerInterface = webInterfaceFactory.CreateSteamWebInterface<PlayerService>();
+				var games = await steamPlayerInterface.GetOwnedGamesAsync(
+					76561199117557684,
+					includeAppInfo: true,
+					includeFreeGames: true,
+					appIdsToFilter: [uint.Parse(steamSummary.PlayingGameId)]
+				);
+				
+				var game = games.Data.OwnedGames.First();
+				var hours = game.PlaytimeForever.TotalHours;
+				var minutes = game.PlaytimeForever.Minutes;
+				currentSteamGameInfos = (
+					game.Name,
+					"https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/" +
+					$"{game.AppId}/{game.ImgIconUrl}.jpg",
+					$"Temps de jeu : {hours:0} heure{(hours > 1 ? "s" : "")} et " +
+					$"{minutes:0} minute{(minutes > 1 ? "s" : "")} "
+				);
+			}
+			steamProfil = (steamSummary.AvatarMediumUrl, steamSummary.UserStatus switch
+			{
+				UserStatus.Offline => "Déconnecté",
+				UserStatus.Online  => "En ligne",
+				UserStatus.Busy    => "Occupé",
+				UserStatus.Away    => "Absent",
+				UserStatus.Snooze  => "Zzz",
+				UserStatus.Unknown => "Inconnu",
+				UserStatus.InGame  => "En jeu",
+				_                  => throw new ArgumentOutOfRangeException()
+			}, steamSummary.UserStatus.ToString().ToLower());
 		}
-		steamProfil = (steamSummary.AvatarMediumUrl, steamSummary.UserStatus switch
+		catch
 		{
-			UserStatus.Offline => "Déconnecté",
-			UserStatus.Online  => "En ligne",
-			UserStatus.Busy    => "Occupé",
-			UserStatus.Away    => "Absent",
-			UserStatus.Snooze  => "Zzz",
-			UserStatus.Unknown => "Inconnu",
-			UserStatus.InGame  => "En jeu",
-			_                  => throw new ArgumentOutOfRangeException()
-		}, steamSummary.UserStatus.ToString().ToLower());
+
+		}
+		
 		
 		await using var context = new WebDbContext();
 		lastPush = await context.ProjectRepositories
