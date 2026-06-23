@@ -1,4 +1,6 @@
 ﻿@page "/warhammer"
+@using System.Text.Json
+@using Sinaf.Me.Models.DawnOfWarDE
 <PageTitle>Warhammer</PageTitle>
 
 <main>
@@ -8,10 +10,41 @@
         <br/>Je vous partage alors ici, mon fanatisme pour 40k et AoS!
     </p>
 
-    <div>
+    <section id="links">
         @* <h2><a href="/warhammer/armies">Armees</a></h2> *@
         @* <h2><a href="/warhammer/battles">Batailles</a></h2> *@
         <h2><a href="/warhammer/gallery">Galerie</a></h2>
         <h2><a href="/warhammer/citations">Citations</a></h2>
-    </div>
+    </section>
 </main>
+
+@code {
+    private static readonly HttpClient httpClient = new ();
+
+    private LeaderboardStats? leaderboard;
+    private IEnumerable<MatchHistory> matchHistories = [];
+    private IEnumerable<Profile> profiles = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        var historyJson = await httpClient.GetFromJsonAsync<JsonElement>(
+            "https://dow-api.reliclink.com/community/leaderboard/" +
+            "getRecentMatchHistoryByProfileId?title=dow1-de&profile_id=14191330"
+        );
+
+        profiles = historyJson.GetProperty("profiles").Deserialize<IEnumerable<Profile>>()!;
+        matchHistories = historyJson.GetProperty("matchHistoryStats")
+                                         .Deserialize<IEnumerable<MatchHistory>>()!
+                                         .OrderByDescending(x => x.StartGameTime);
+
+
+        var json = await httpClient.GetFromJsonAsync<JsonElement>(
+            "https://dow-api.reliclink.com/community/leaderboard/" +
+            "getPersonalStat?&title=dow1-de&profile_names=[\"/steam/76561199117557684\"]"
+        );
+        Console.WriteLine(json);
+        leaderboard = json.GetProperty("leaderboardStats").EnumerateArray().First()
+                          .Deserialize<LeaderboardStats>();
+    }
+
+}
