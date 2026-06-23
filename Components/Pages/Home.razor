@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using Sinaf.Me.Data
 
 <PageTitle>Accueil</PageTitle>
 
@@ -44,6 +45,34 @@
             <img class="pixel-art" src="@Assets["images/github_avatar.png"]" alt="github avatar"/>
         </a>
     </section>
+    
+    @if (steamProfil != null)
+    {
+        <section id="steam">
+            <h2>(*/ω＼*) Activité Steam</h2>
+            <div>
+                <img src="@steamProfil.Value.urlIcon" alt="steam avatar"/>
+                <div>
+                    <span id="@steamProfil.Value.statusType">@steamProfil.Value.status</span>
+                    @if (currentSteamGameInfos != null)
+                    {
+                        <div>
+                            <img src="@currentSteamGameInfos.Value.icon" alt="steam game icon"/>
+                            <div>
+                                <p>@currentSteamGameInfos.Value.name</p>
+                                <p>@currentSteamGameInfos.Value.hours</p>
+                            </div>
+                        </div>
+                    }
+                    else if (presence != null)
+                    {
+                        <p>@presence.Libelle</p>
+                    }
+                </div>
+            </div>
+        </section>
+    }
+    
     <section id="projects">
         <h2>Mes projets notables q(≧▽≦q)</h2>
         <div id="projects__list">
@@ -63,7 +92,6 @@
                 }
                 else
                 {
-                    
                     <a class="project">
                         <h3>@project.Name</h3>
                         <img src="@Assets[$"projects/{project.UniqueName}/icon.png"]"
@@ -72,5 +100,19 @@
                 }
             }
         </div>
+    </section>
+    <section id="spotify">
+        <h2>Playlist Spotify (＠_＠;)</h2>
+        <!--suppress HtmlDeprecatedAttribute -->
+        <iframe data-testid="embed-iframe"
+                style="border-radius:12px"
+                src="https://open.spotify.com/embed/playlist/0xyBePxU1TTWb6lGlqTk3V?utm_source=generator&theme=0&si=8a1daaa9cf93491b"
+                width="100%"
+                height="152"
+                frameBorder="0"
+                allowfullscreen=""
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy">
+        </iframe>
     </section>
 </main>

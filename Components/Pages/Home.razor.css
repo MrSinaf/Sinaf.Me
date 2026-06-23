@@ -11,7 +11,7 @@
     position: relative;
     flex-direction: column;
     padding: 20px 0 0 0;
-    
+
     h1 {
         font-size: 5rem;
         line-height: 1;
@@ -54,7 +54,7 @@
     align-items: end;
     gap: 1rem;
     margin: 110px 0 60px 0;
-    
+
     > h2 {
         margin: 0;
     }
@@ -67,7 +67,7 @@
         margin-right: 15px;
         width: 650px;
         transition: scale 0.2s ease-in-out;
-        
+
         > p {
             margin: 0;
             max-width: calc(100% - 100px);
@@ -79,7 +79,7 @@
             top: -20px;
             width: 100px;
         }
-        
+
         > div {
             display: flex;
             margin-bottom: 0.5rem;
@@ -111,10 +111,82 @@
     }
 }
 
+#steam {
+    > h2 {
+        margin: 0 10px 10px 10px;
+    }
+
+    p {
+        margin: 0;
+    }
+
+    > div {
+        background: var(--background-color-secondary);
+        width: 650px;
+        padding: 10px;
+        border-radius: 10px;
+        display: flex;
+        gap: 10px;
+        margin: 0 10px;
+
+        #online {
+            color: #55a0c9
+        }
+        #offline {
+            color: #626262
+        }
+        #busy {
+            color: #ab4a4a
+        }
+        #away {
+            color: #ecdb00
+        }
+        #snooze {
+            color: #ac52d7
+        }
+        #unknown {
+            color: #000000
+        }
+        
+        #ingame {
+            color: #4aab91
+        }
+
+        > img {
+            width: 64px;
+            height: 64px;
+            border-radius: 5px;
+        }
+
+        > div {
+
+            > div {
+                display: flex;
+                gap: 10px;
+                margin-top: 5px;
+                align-items: center;
+
+                > img {
+                    width: 32px;
+                    height: 32px;
+                }
+
+                > div {
+                    p:last-child {
+                        font-size: 0.7rem;
+                        color: var(--accent-color);
+                    }
+                }
+            }
+        }
+    }
+}
+
 #projects {
     > h2 {
         text-align: center;
         margin-bottom: 10px;
+        margin-top: 30px;
     }
 
     #projects__list {
@@ -169,6 +241,12 @@
     }
 }
 
+#spotify {
+    > h2 {
+        margin: 30px 10px 10px 10px;
+    }
+}
+
 
 @media (min-width: 1000px) {
     #presentation {
@@ -191,12 +269,12 @@
             width: 200px;
             opacity: 0.5;
         }
-        
+
         > div {
             flex-direction: row;
         }
     }
-    
+
     .project {
         width: 150px;
         height: 200px;
@@ -208,7 +286,7 @@
         width: 100px;
         height: 150px;
     }
-    
+
     #presentation {
         h1 {
             font-size: 3rem;
@@ -217,12 +295,13 @@
         > img {
             width: 150px;
         }
-        
+
         > div {
             flex-direction: column;
             bottom: -100px;
         }
     }
+    
     #github__commit {
         padding: 0.5rem;
 
