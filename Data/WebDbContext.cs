@@ -14,6 +14,8 @@ public partial class WebDbContext : DbContext
 
     public virtual DbSet<LoginAttemp> LoginAttemps { get; set; }
 
+    public virtual DbSet<Presence> Presences { get; set; }
+
     public virtual DbSet<Project> Projects { get; set; }
 
     public virtual DbSet<ProjectLink> ProjectLinks { get; set; }
@@ -44,6 +46,22 @@ public partial class WebDbContext : DbContext
                 .UseCollation("utf8mb3_uca1400_ai_ci")
                 .HasCharSet("utf8mb3");
             entity.Property(e => e.Success).HasColumnName("success");
+        });
+
+        modelBuilder.Entity<Presence>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("presences");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("id");
+            entity.Property(e => e.Libelle)
+                .HasMaxLength(128)
+                .HasColumnName("libelle")
+                .UseCollation("utf8mb3_uca1400_ai_ci")
+                .HasCharSet("utf8mb3");
         });
 
         modelBuilder.Entity<Project>(entity =>
