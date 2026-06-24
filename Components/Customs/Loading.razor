@@ -1,7 +1,8 @@
-<div class="loader" style="scale: @Scale"></div>
+<div class="loader" style="scale: @Scale; margin: @(Margin)px auto;"></div>
 
 @code {
 
     [Parameter] public float Scale { get; set; } = 2;
+    [Parameter] public float Margin { get; set; } = 60;
 
 }

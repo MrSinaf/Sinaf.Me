@@ -1,6 +1,6 @@
 ﻿@page "/"
 @namespace Sinaf.Me.Components.Pages
-@using Sinaf.Me.Data
+@using Sinaf.Me.Components.Customs
 
 <PageTitle>Accueil</PageTitle>
 
@@ -37,7 +37,7 @@
             </div>
             @if (lastPush == null)
             {
-                <p>Chargement du dernier commit...</p>
+                <Loading Margin="0" Scale="0.5F"/>
             }
             else
             {
@@ -76,35 +76,47 @@
             </a>
         </section>
     }
+    else if (lastPush == null && projects.Length > 0)
+    {
+        <Loading/>
+    }
 
-    <section id="projects">
-        <h2>Mes projets notables q(≧▽≦q)</h2>
-        <div id="projects__list">
-            @foreach (var project in projects)
-            {
-                var link = project.ProjectLinks.OrderByDescending(x => x.Priority).FirstOrDefault();
+    @if (projects.Length > 0)
+    {
+        <section id="projects">
+            <h2>Mes projets notables q(≧▽≦q)</h2>
+            <div id="projects__list">
+                @foreach (var project in projects)
+                {
+                    var link = project.ProjectLinks.OrderByDescending(x => x.Priority).FirstOrDefault();
 
-                @if (link != null)
-                {
-                    <a class="project"
-                       href="@link.Url"
-                       target="@(link.IsIntern ? "_" : "_blank")">
-                        <h3>@project.Name</h3>
-                        <img src="@Assets[$"projects/{project.UniqueName}/icon.png"]"
-                             alt="Icon du projet"/>
-                    </a>
+                    @if (link != null)
+                    {
+                        <a class="project"
+                           href="@link.Url"
+                           target="@(link.IsIntern ? "_" : "_blank")">
+                            <h3>@project.Name</h3>
+                            <img src="@Assets[$"projects/{project.UniqueName}/icon.png"]"
+                                 alt="Icon du projet"/>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="project">
+                            <h3>@project.Name</h3>
+                            <img src="@Assets[$"projects/{project.UniqueName}/icon.png"]"
+                                 alt="Icon du projet"/>
+                        </a>
+                    }
                 }
-                else
-                {
-                    <a class="project">
-                        <h3>@project.Name</h3>
-                        <img src="@Assets[$"projects/{project.UniqueName}/icon.png"]"
-                             alt="Icon du projet"/>
-                    </a>
-                }
-            }
-        </div>
-    </section>
+            </div>
+        </section>
+    }
+    else
+    {
+        <Loading/>
+    }
+
     <section id="spotify">
         <h2>Playlist Spotify (＠_＠;)</h2>
         <!--suppress HtmlDeprecatedAttribute -->

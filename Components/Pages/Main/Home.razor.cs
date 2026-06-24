@@ -62,15 +62,16 @@ public partial class Home
 		{
 
 		}
-		
-		
 		await using var context = new WebDbContext();
+		var presences = await context.Presences.ToArrayAsync();
+		presence = presences[Random.Shared.Next(presences.Length)];
+		StateHasChanged();
 		lastPush = await context.ProjectRepositories
 								.OrderByDescending(x => x.Update)
 								.FirstAsync();
+		StateHasChanged();
 		projects = await context.Projects.Include(x => x.ProjectLinks)
 								.OrderByDescending(x => x.Order).Take(3).ToArrayAsync();
-		var presences = await context.Presences.ToArrayAsync();
-		presence = presences[Random.Shared.Next(presences.Length)];
+		StateHasChanged();
 	}
 }
