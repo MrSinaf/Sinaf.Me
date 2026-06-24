@@ -11,11 +11,11 @@
     <link rel="stylesheet" href="@Assets["css/app.css"]"/>
     <link rel="stylesheet" href="@Assets["Sinaf.Me.styles.css"]"/>
     <ImportMap/>
-    <HeadOutlet @rendermode="InteractiveServer"/>
+    <HeadOutlet @rendermode="@(new InteractiveServerRenderMode(prerender: false))"/>
 </head>
 
 <body>
-<Routes @rendermode="InteractiveServer"/>
+<Routes @rendermode="@(new InteractiveServerRenderMode(prerender: false))"/>
 <ReconnectModal/>
 <script src="@Assets["_framework/blazor.web.js"]"></script>
 <script src="@Assets["js/app.js"]"></script>

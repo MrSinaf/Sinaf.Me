@@ -11,7 +11,7 @@
             <header>
                 <div>
                     <h1>@(character?.Name ?? ">Inconnu<")</h1>
-                    @if (character.ClanName != null)
+                    @if (character!.ClanName != null)
                     {
                         <span>@character.ClanName</span>
                     }

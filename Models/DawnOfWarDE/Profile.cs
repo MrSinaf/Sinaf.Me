@@ -8,10 +8,10 @@ public class Profile
 	public uint ProfileId { get; init; }
 	
 	[JsonPropertyName("name")]
-	public string Name { get; init; }
+	public string Name { get; init; } = string.Empty;
 	
 	[JsonPropertyName("alias")]
-	public string Alias { get; init; }
+	public string Alias { get; init; } = string.Empty;
 	
 	[JsonPropertyName("personal_statgroup_id")]
 	public uint PersonalStatGroupId { get; init; }
@@ -25,6 +25,6 @@ public class Profile
 	[JsonPropertyName("leaderboardregion_id")]
 	public int LeaderboardRegionId { get; init; }
 	
-	[JsonPropertyName("country")]
-	public string Country { get; init; }
+	[JsonPropertyName("country")] 
+	public string Country { get; init; } = "xx";
 }
