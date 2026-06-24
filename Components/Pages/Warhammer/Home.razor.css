@@ -10,7 +10,7 @@
 
 #stats {
     margin: 20px;
-    
+
     > div {
         display: flex;
         position: relative;
@@ -20,14 +20,70 @@
         background: var(--background-color-secondary);
         gap: 20px;
         height: 200px;
-        
+
         > div:last-of-type {
             width: 100%;
             max-width: 900px;
             
-            .match {
-                font-size: 0.8rem;
-                height: 92px;
+            > .match__list {
+                overflow-y: scroll;
+                height: 136px;
+                
+                .match {
+                    font-size: 0.8rem;
+                    background: rgb(0 0 0 / 0.3);
+                    margin: 5px 0;
+                    padding: 5px;
+                    border-radius: 5px;
+
+                    > div {
+                        display: flex;
+                        width: 100%;
+
+                        > div:last-child {
+                            margin-left: auto;
+                        }
+                    }
+
+                    &.win {
+                        border-left: 5px solid var(--color-green-light);
+                    }
+
+                    &.lose {
+                        border-left: 5px solid var(--color-red-light);
+                    }
+
+                    .match__result {
+                        &.win {
+                            color: var(--color-green-light);
+                        }
+
+                        &.lose {
+                            color: var(--color-red-light);
+                        }
+                    }
+
+                    .match__compo {
+                        font-size: 0.7rem;
+                        font-weight: bold;
+                    }
+
+                    .match__map {
+                        font-size: 0.7rem;
+                        opacity: 0.5;
+                        font-style: italic;
+                    }
+
+                    .match__time {
+                        font-size: 0.7rem;
+                        color: #ba78f8;
+                    }
+
+                    .match__date {
+                        font-size: 0.7rem;
+                        margin-inline-start: auto;
+                    }
+                }
             }
         }
 
@@ -37,7 +93,7 @@
             bottom: 20px;
             opacity: 0.5;
         }
-        
+
         h4 {
             opacity: 50%;
             margin: 0;

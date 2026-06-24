@@ -27,46 +27,67 @@
                 <div>
                     <h3>W40k: Dawn Of War DE</h3>
                     <hr/>
-                    <div>
-                        <h4>Derniers match</h4>
+                    <h4>Derniers match</h4>
+                    <div class="match__list">
                         @foreach (var match in matchHistories)
                         {
                             var win = match.MatchHistoryMembers
-                                               .First(x => x.ProfileId == PROFIL_ID).Outcome == 1;
-                            var teams = match.MatchHistoryMembers.GroupBy(x => x.TeamId)
-                                             .OrderBy(x => x.Key);
+                                               .First(x => x.ProfileId == PROFIL_ID)
+                                               .Outcome == 1;
+                            var teams = new Dictionary<uint, MatchHistoryMember[]>();
+                            foreach (var team in match.MatchHistoryMembers
+                                                      .GroupBy(x => x.TeamId)
+                                                      .OrderBy(x => x.Key))
+                                teams[team.Key] = team.ToArray();
+
                             var time = match.CompletionTime.Subtract(match.StartGameTime);
+                            var i = 0;
 
-                            <div class="match">
-                                <span class="match__map">
-                                    @match.MapName[3..].Replace("_", " ")
-                                </span>
-                                <span class="match__date">
-                                    @match.StartGameTime.ToString("dd/MM/yy HH:mm")
-                                </span>
-                                <span class="match__type">
-                                    @(match.MatchTypeId == 0 ? "custom" : "classé")
-                                </span>
-                                <span class="match__result">
-                                    @(win ? "Victoire" : "Défaite")
-                                </span>
-                                <span class="match__time">
-                                    @time.ToString("mm\\:ss")
-                                </span>
-
-                                @foreach (var team in teams)
-                                {
-                                    <div class="match__team">
-                                        <span>Équipe @(team.Key + 1)</span>
-                                        @foreach (var member in team)
-                                        {
-                                            var profile = profiles.First(x =>
-                                                x.ProfileId == member.ProfileId
-                                            );
-                                            <span>@profile.Alias</span>
-                                        }
+                            <div class="match @(win ? "win" : "lose")">
+                                <div>
+                                    <div>
+                                        <span class="match__map">
+                                            @match.MapName[3..].Replace("_", " ")
+                                        </span>
+                                        @("><")
+                                        <span class="match__compo">
+                                            @foreach (var (_, members) in teams)
+                                            {
+                                                i++;
+                                                @(members.Length)
+                                                if (i < teams.Count)
+                                                {
+                                                    @("v")
+                                                }
+                                            }
+                                            @($" {(match.MatchTypeId == 0 ? "perso" : "classé")}")
+                                        </span>
+                                        @("><")
+                                        <span class="match__time">
+                                            @time.ToString("mm\\:ss")
+                                        </span>
                                     </div>
-                                }
+                                    <div>
+                                        <span class="match__date">
+                                            le @match.StartGameTime.ToString("dd/MM/yy à HH:mm")
+                                        </span>
+                                    </div>
+                                </div>
+
+
+                                @* @foreach (var (team, members) in teams) *@
+                                @* { *@
+                                @*     <div class="match__team"> *@
+                                @*         <span>Équipe @(team + 1)</span> *@
+                                @*         @foreach (var member in members) *@
+                                @*         { *@
+                                @*             var profile = profiles.First(x => *@
+                                @*                 x.ProfileId == member.ProfileId *@
+                                @*             ); *@
+                                @*             <span>@profile.Alias</span> *@
+                                @*         } *@
+                                @*     </div> *@
+                                @* } *@
                             </div>
                         }
                     </div>
@@ -96,7 +117,7 @@
         profiles = historyJson.GetProperty("profiles").Deserialize<IEnumerable<Profile>>()!;
         matchHistories = historyJson.GetProperty("matchHistoryStats")
                                     .Deserialize<IEnumerable<MatchHistory>>()!
-                                    .OrderByDescending(x => x.StartGameTime).Take(3);
+                                    .OrderByDescending(x => x.StartGameTime);
 
 
         var json = await httpClient.GetFromJsonAsync<JsonElement>(

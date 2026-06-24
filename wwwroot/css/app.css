@@ -22,6 +22,7 @@
     --max-page-width: 1600px;
     --color-green-dark: rgba(3, 96, 74, 0.20);
     --color-green-light: rgb(0 255 197 / 0.35);
+    --color-red-light: rgb(255 0 0 / 0.55);
     font-family: 'JetBrains Mono', monospace;
 }
 
