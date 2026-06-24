@@ -164,16 +164,26 @@ button {
     color: #e2a5ea;
 }
 
+.no-wrap {
+    white-space: nowrap;
+    text-wrap: nowrap;
+}
+
 .pixel-art {
     image-rendering: pixelated;
 }
 
 .button {
+    font-size: 1rem;
     border: none;
     background: var(--button-color-background);
     padding: 5px 15px;
     border-radius: 5px;
     display: inline-block;
+}
+
+.button.secondary {
+    background: var(--background-color-secondary);
 }
 
 .button:any-link {
