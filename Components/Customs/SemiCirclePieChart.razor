@@ -1,0 +1,35 @@
+﻿<div class="graphic">
+    @{
+        var ratio = (double)LeftValue / (LeftValue + RightValue);
+        var percent = (int)Math.Round(100 * ratio);
+        var chartAngle = 180 * ratio;
+    }
+    <div class="graphic__chart" style="--wins-angle: @(chartAngle)deg">
+        <div>
+            <strong>@percent%</strong>
+            <span>@MainLibelle</span>
+        </div>
+    </div>
+
+    <div class="graphic__legend">
+        <span>
+            <i class="left"></i>
+            @LeftLibelle — @LeftValue
+        </span>
+        <span>
+            <i class="right"></i>
+            @RightLibelle — @RightValue
+        </span>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string MainLibelle { get; set; } = "victoires";
+
+    [Parameter] public string LeftLibelle { get; set; } = "Victoires";
+    [Parameter] public uint LeftValue { get; set; }
+    
+    [Parameter] public string RightLibelle { get; set; } = "Défaites";
+    [Parameter] public uint RightValue { get; set; }
+
+}

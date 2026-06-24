@@ -1,5 +1,6 @@
 ﻿@page "/warhammer"
 @using System.Text.Json
+@using Sinaf.Me.Components.Customs
 @using Sinaf.Me.Models.DawnOfWarDE
 <PageTitle>Warhammer</PageTitle>
 
@@ -16,10 +17,70 @@
         <h2><a href="/warhammer/gallery">Galerie</a></h2>
         <h2><a href="/warhammer/citations">Citations</a></h2>
     </section>
+
+    <section id="stats">
+        <h2>Statistique en jeu</h2>
+        @if (leaderboard != null)
+        {
+            <div>
+                <SemiCirclePieChart LeftValue="@leaderboard.Wins" RightValue="@leaderboard.Losses"/>
+                <div>
+                    <h3>W40k: Dawn Of War DE</h3>
+                    <hr/>
+                    <div>
+                        <h4>Derniers match</h4>
+                        @foreach (var match in matchHistories)
+                        {
+                            var win = match.MatchHistoryMembers
+                                               .First(x => x.ProfileId == PROFIL_ID).Outcome == 1;
+                            var teams = match.MatchHistoryMembers.GroupBy(x => x.TeamId)
+                                             .OrderBy(x => x.Key);
+                            var time = match.CompletionTime.Subtract(match.StartGameTime);
+
+                            <div class="match">
+                                <span class="match__map">
+                                    @match.MapName[3..].Replace("_", " ")
+                                </span>
+                                <span class="match__date">
+                                    @match.StartGameTime.ToString("dd/MM/yy HH:mm")
+                                </span>
+                                <span class="match__type">
+                                    @(match.MatchTypeId == 0 ? "custom" : "classé")
+                                </span>
+                                <span class="match__result">
+                                    @(win ? "Victoire" : "Défaite")
+                                </span>
+                                <span class="match__time">
+                                    @time.ToString("mm\\:ss")
+                                </span>
+
+                                @foreach (var team in teams)
+                                {
+                                    <div class="match__team">
+                                        <span>Équipe @(team.Key + 1)</span>
+                                        @foreach (var member in team)
+                                        {
+                                            var profile = profiles.First(x =>
+                                                x.ProfileId == member.ProfileId
+                                            );
+                                            <span>@profile.Alias</span>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+                <span>@leaderboard.Rating.ToString("### ### ##0") ELO</span>
+            </div>
+        }
+    </section>
 </main>
 
 @code {
     private static readonly HttpClient httpClient = new ();
+
+    private const int PROFIL_ID = 14191330;
 
     private LeaderboardStats? leaderboard;
     private IEnumerable<MatchHistory> matchHistories = [];
@@ -29,20 +90,19 @@
     {
         var historyJson = await httpClient.GetFromJsonAsync<JsonElement>(
             "https://dow-api.reliclink.com/community/leaderboard/" +
-            "getRecentMatchHistoryByProfileId?title=dow1-de&profile_id=14191330"
+            $"getRecentMatchHistoryByProfileId?title=dow1-de&profile_id={PROFIL_ID}"
         );
 
         profiles = historyJson.GetProperty("profiles").Deserialize<IEnumerable<Profile>>()!;
         matchHistories = historyJson.GetProperty("matchHistoryStats")
-                                         .Deserialize<IEnumerable<MatchHistory>>()!
-                                         .OrderByDescending(x => x.StartGameTime);
+                                    .Deserialize<IEnumerable<MatchHistory>>()!
+                                    .OrderByDescending(x => x.StartGameTime).Take(3);
 
 
         var json = await httpClient.GetFromJsonAsync<JsonElement>(
             "https://dow-api.reliclink.com/community/leaderboard/" +
             "getPersonalStat?&title=dow1-de&profile_names=[\"/steam/76561199117557684\"]"
         );
-        Console.WriteLine(json);
         leaderboard = json.GetProperty("leaderboardStats").EnumerateArray().First()
                           .Deserialize<LeaderboardStats>();
     }

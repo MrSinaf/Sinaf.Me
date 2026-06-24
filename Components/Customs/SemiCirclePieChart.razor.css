@@ -1,0 +1,90 @@
+﻿.graphic {
+    > .graphic__chart {
+        --wins-angle: 90deg;
+
+        position: relative;
+        width: 100%;
+        max-width: 260px;
+        aspect-ratio: 2 / 1;
+        margin: auto;
+        overflow: hidden;
+
+        > div {
+            position: absolute;
+            left: 50%;
+            bottom: 4px;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform: translateX(-50%);
+            text-align: center;
+
+            > strong {
+                font-size: 2rem;
+                line-height: 1;
+            }
+
+            > span {
+                color: color-mix(in srgb, var(--text-color) 70%, transparent);
+                font-size: 0.75rem;
+                text-transform: uppercase;
+            }
+        }
+    }
+
+
+    > .graphic__chart::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: conic-gradient(
+                from 270deg,
+                #2b9f2d 0deg var(--wins-angle),
+                #303038 var(--wins-angle) 180deg,
+                transparent 180deg 360deg
+        );
+    }
+
+    > .graphic__chart::after {
+        content: "";
+        position: absolute;
+        left: 15%;
+        right: 15%;
+        bottom: -72%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: var(--background-color-secondary);
+    }
+
+    > .graphic__legend {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px 12px;
+        margin-top: 10px;
+        font-size: 0.85rem;
+
+        > span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        i {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .left {
+            background: #2b9f2d;
+        }
+
+        .right {
+            background: #303038;
+        }
+    }
+}
