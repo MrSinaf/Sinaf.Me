@@ -225,7 +225,6 @@
 
             > img {
                 transition: all 0.2s;
-                image-rendering: pixelated;
                 z-index: -1;
             }
 
