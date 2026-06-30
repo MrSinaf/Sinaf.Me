@@ -11,6 +11,10 @@ main::before {
     z-index: -1;
 }
 
+#no-ai {
+    margin: -20px 0 50px 0;
+}
+
 h1 {
     text-align: center;
     margin-bottom: 20px;
