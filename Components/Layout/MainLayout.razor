@@ -47,39 +47,6 @@
 
 @Body
 
-@if (!canAccess)
-{
-    <div id="warning-entry">
-        <div>
-            <h1>WARNING</h1>
-            <img src="@Assets["r34/pussy.png"]" alt="a normal image"/>
-            <hr/>
-            <p>
-                Vous entrez dans l'espace personnel d'un <span class="femboy-color">femboy</span>,
-                il
-                est possible que vous rencontriez du contenu… un peu spicy
-                <span class="no-wrap">(*/ω＼*).</span>
-            </p>
-            <p>
-                Le principal contenu du site n'est pas
-                <span class="femboy-color">NSFW :3</span> et ce n'est pas du tout l'objectif du
-                site.
-            </p>
-
-            <p>
-                Mais vous devez confirmer que vous êtes majeur et acceptez d’être exposé à du
-                contenu
-                <span class="no-wrap">
-                NS<span class="femboy-color">F</span>(<span class="femboy-color">emboy</span>)W.
-            </span>
-            </p>
-
-            <button class="button" @onclick="() => canAccess = true">Entrer</button>
-            <a class="button secondary" href="https://pointerpointer.com/">Quitter</a>
-        </div>
-    </div>
-}
-
 <footer>
     <p>&copy;@DateTime.Now.Year - MrSinaf | PurrVert - Tous droits réservés.</p>
 </footer>
@@ -90,9 +57,3 @@
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
-
-@code{
-
-    private bool canAccess;
-
-}
