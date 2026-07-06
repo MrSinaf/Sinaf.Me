@@ -16,6 +16,10 @@
         font-size: 5rem;
         line-height: 1;
         margin: 0 0 0 0;
+
+        @media (min-width: 1000px) {  
+            margin-right: 120px;
+        }
     }
 
     p {
@@ -30,6 +34,15 @@
         rotate: 10deg;
         z-index: -1;
         animation: floaty 3s ease-in-out infinite;
+        
+        @media (max-width: 650px) {
+            width: 200px;
+            opacity: 0.5;
+        }
+        
+        @media (max-width: 400px) {
+            width: 150px;
+        }
     }
 
     > div {
@@ -44,6 +57,17 @@
             width: 80px;
             align-self: end;
             text-align: center;
+        }
+
+
+        @media (max-width: 650px) {
+            flex-direction: row;
+        }
+
+
+        @media (max-width: 400px) {
+            flex-direction: column;
+            bottom: -100px;
         }
     }
 }
@@ -65,12 +89,17 @@
         padding: 1rem;
         border-radius: 10px;
         margin-right: 15px;
-        width: 650px;
+        max-width: 650px;
+        width: 100%;
         transition: scale 0.2s ease-in-out;
 
         > p {
             margin: 0;
             max-width: calc(100% - 100px);
+
+            @media (max-width: 400px) {
+                max-width: inherit;
+            }
         }
 
         > img {
@@ -78,6 +107,10 @@
             right: 0;
             top: -20px;
             width: 100px;
+
+            @media (max-width: 400px) {
+                display: none;
+            }
         }
 
         > div {
@@ -103,6 +136,10 @@
                 background: black;
             }
         }
+
+        @media (max-width: 500px) {
+            margin: 0;
+        }
     }
 
     #github__commit:hover {
@@ -112,6 +149,8 @@
 }
 
 #steam {
+    width: fit-content;
+
     > h2 {
         margin: 0 10px 10px 10px;
     }
@@ -123,11 +162,12 @@
     > a {
         text-decoration: none;
         color: inherit;
-        
+
         > div {
             transition: all 0.2s ease-in-out;
             background: var(--background-color-secondary);
-            width: 650px;
+            max-width: 650px;
+            width: 100%;
             padding: 10px;
             border-radius: 10px;
             display: flex;
@@ -242,6 +282,16 @@
             > * {
                 transform: skew(10deg);
             }
+
+            @media (max-width: 1150px) {
+                width: 250px;
+                height: 300px;
+            }
+
+            @media (max-width: 800px) {
+                width: 150px;
+                height: 200px;
+            }
         }
 
         .project:hover {
@@ -263,44 +313,21 @@
 }
 
 
-@media (min-width: 1000px) {
-    #presentation {
-        > h1 {
-            margin-right: 120px;
-        }
-    }
-}
+/*@media (max-width: 850px) {*/
+/*    #github {*/
+/*        width: 100%;*/
+/*        margin-right: 0;*/
 
-@media (max-width: 1150px) {
-    .project {
-        width: 250px;
-        height: 300px;
-    }
-}
+/*        & > #github__commit {*/
+/*            margin: 0;*/
+/*            width: auto;*/
+/*        }*/
+/*    }*/
+/*}*/
 
-@media (max-width: 650px) {
-    #presentation {
-        > img {
-            width: 200px;
-            opacity: 0.5;
-        }
 
-        > div {
-            flex-direction: row;
-        }
-    }
-
-    .project {
-        width: 150px;
-        height: 200px;
-    }
-}
 
 @media (max-width: 400px) {
-    .project {
-        width: 100px;
-        height: 150px;
-    }
 
     #presentation {
         h1 {
