@@ -10,4 +10,6 @@ public partial class Clan
     public string Name { get; set; } = null!;
 
     public virtual ICollection<Character> Characters { get; set; } = new List<Character>();
+
+    public virtual ICollection<ClanPaint> ClanPaints { get; set; } = new List<ClanPaint>();
 }

@@ -1,0 +1,24 @@
+﻿section {
+    display: grid;
+    margin-top: 10px;
+    grid-template-columns: 1fr 1fr 1fr;
+    
+    article {
+        display: flex;
+
+        div:first-child {
+            width: 42px;
+            height: 42px;
+            margin: 5px 10px;
+        }
+
+        div:last-child {
+            > span {
+                padding: 0;
+                margin: 0 5px 0 0;
+                font-size: 0.8rem;
+            }
+        }
+    }
+}
+

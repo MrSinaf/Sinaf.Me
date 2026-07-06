@@ -27,6 +27,8 @@ public partial class Character
 
     public virtual ICollection<BattleUnitCharacter> BattleUnitCharacters { get; set; } = new List<BattleUnitCharacter>();
 
+    public virtual ICollection<CharacterPaint> CharacterPaints { get; set; } = new List<CharacterPaint>();
+
     public virtual Clan? Clan { get; set; }
 
     public virtual ICollection<Unit> Units { get; set; } = new List<Unit>();

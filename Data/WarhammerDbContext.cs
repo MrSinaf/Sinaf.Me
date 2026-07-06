@@ -26,11 +26,21 @@ public partial class WarhammerDbContext : DbContext
 
     public virtual DbSet<CharacterDetail> CharacterDetails { get; set; }
 
+    public virtual DbSet<CharacterPaint> CharacterPaints { get; set; }
+
     public virtual DbSet<Citation> Citations { get; set; }
 
     public virtual DbSet<Clan> Clans { get; set; }
 
+    public virtual DbSet<ClanPaint> ClanPaints { get; set; }
+
     public virtual DbSet<Game> Games { get; set; }
+
+    public virtual DbSet<Paint> Paints { get; set; }
+
+    public virtual DbSet<PaintSubType> PaintSubTypes { get; set; }
+
+    public virtual DbSet<PaintType> PaintTypes { get; set; }
 
     public virtual DbSet<Player> Players { get; set; }
 
@@ -351,6 +361,42 @@ public partial class WarhammerDbContext : DbContext
                 .HasColumnName("updated_at");
         });
 
+        modelBuilder.Entity<CharacterPaint>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("character_paints");
+
+            entity.HasIndex(e => e.CharacterId, "character_paints_characters_id_fk");
+
+            entity.HasIndex(e => new { e.PaintId, e.CharacterId }, "character_paints_pk").IsUnique();
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("id");
+            entity.Property(e => e.CharacterId)
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("character_id");
+            entity.Property(e => e.Comment)
+                .HasMaxLength(256)
+                .HasColumnName("comment")
+                .UseCollation("utf8mb3_uca1400_ai_ci")
+                .HasCharSet("utf8mb3");
+            entity.Property(e => e.PaintId)
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("paint_id");
+
+            entity.HasOne(d => d.Character).WithMany(p => p.CharacterPaints)
+                .HasForeignKey(d => d.CharacterId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("character_paints_characters_id_fk");
+
+            entity.HasOne(d => d.Paint).WithMany(p => p.CharacterPaints)
+                .HasForeignKey(d => d.PaintId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("character_paints_paints_id_fk");
+        });
+
         modelBuilder.Entity<Citation>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -388,6 +434,42 @@ public partial class WarhammerDbContext : DbContext
                 .HasCharSet("utf8mb3");
         });
 
+        modelBuilder.Entity<ClanPaint>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("clan_paints");
+
+            entity.HasIndex(e => e.PaintId, "clan_paints_paints_id_fk");
+
+            entity.HasIndex(e => new { e.ClanId, e.PaintId }, "clan_paints_pk_2").IsUnique();
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("id");
+            entity.Property(e => e.ClanId)
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("clan_id");
+            entity.Property(e => e.Comment)
+                .HasMaxLength(256)
+                .HasColumnName("comment")
+                .UseCollation("utf8mb3_uca1400_ai_ci")
+                .HasCharSet("utf8mb3");
+            entity.Property(e => e.PaintId)
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("paint_id");
+
+            entity.HasOne(d => d.Clan).WithMany(p => p.ClanPaints)
+                .HasForeignKey(d => d.ClanId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("clan_paints_clans_id_fk");
+
+            entity.HasOne(d => d.Paint).WithMany(p => p.ClanPaints)
+                .HasForeignKey(d => d.PaintId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("clan_paints_paints_id_fk");
+        });
+
         modelBuilder.Entity<Game>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -399,6 +481,78 @@ public partial class WarhammerDbContext : DbContext
                 .HasColumnName("id");
             entity.Property(e => e.Name)
                 .HasMaxLength(128)
+                .HasColumnName("name")
+                .UseCollation("utf8mb3_uca1400_ai_ci")
+                .HasCharSet("utf8mb3");
+        });
+
+        modelBuilder.Entity<Paint>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("paints");
+
+            entity.HasIndex(e => e.SubTypeId, "paints_paint_sub_types_id_fk");
+
+            entity.HasIndex(e => e.TypeId, "peints_peint_types_id_fk");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("id");
+            entity.Property(e => e.Hex)
+                .HasMaxLength(6)
+                .HasColumnName("hex")
+                .UseCollation("utf8mb3_uca1400_ai_ci")
+                .HasCharSet("utf8mb3");
+            entity.Property(e => e.Name)
+                .HasMaxLength(64)
+                .HasColumnName("name")
+                .UseCollation("utf8mb3_uca1400_ai_ci")
+                .HasCharSet("utf8mb3");
+            entity.Property(e => e.SubTypeId)
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("sub_type_id");
+            entity.Property(e => e.TypeId)
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("type_id");
+
+            entity.HasOne(d => d.SubType).WithMany(p => p.Paints)
+                .HasForeignKey(d => d.SubTypeId)
+                .HasConstraintName("paints_paint_sub_types_id_fk");
+
+            entity.HasOne(d => d.Type).WithMany(p => p.Paints)
+                .HasForeignKey(d => d.TypeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("peints_peint_types_id_fk");
+        });
+
+        modelBuilder.Entity<PaintSubType>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("paint_sub_types");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("id");
+            entity.Property(e => e.Name)
+                .HasMaxLength(32)
+                .HasColumnName("name")
+                .UseCollation("utf8mb3_uca1400_ai_ci")
+                .HasCharSet("utf8mb3");
+        });
+
+        modelBuilder.Entity<PaintType>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("paint_types");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("id");
+            entity.Property(e => e.Name)
+                .HasMaxLength(16)
                 .HasColumnName("name")
                 .UseCollation("utf8mb3_uca1400_ai_ci")
                 .HasCharSet("utf8mb3");
