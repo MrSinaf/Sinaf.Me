@@ -38,7 +38,7 @@ public class Auth : Controller
 			|| password != Environment.GetEnvironmentVariable("PASS"))
 		{
 			await context.SaveChangesAsync();
-			return Redirect("/login");
+			return Redirect("/");
 		}
 		
 		loginAttemp.Success = true;
