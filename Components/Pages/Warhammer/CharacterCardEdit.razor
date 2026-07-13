@@ -1,0 +1,122 @@
+﻿@page "/warhammer/characters/{id:int}/edit"
+@using Microsoft.AspNetCore.Authorization
+@using Sinaf.Me.Data
+@using Sinaf.Me.Data.Warhammer
+@attribute [Authorize]
+
+<main>
+    @if (!isLoaded)
+    {
+        <p>Chargement...</p>
+    }
+    else if (character == null)
+    {
+        <section>
+            <h1>Personnage introuvable</h1>
+            <p>Aucun personnage avec l’id @Id n’a été trouvé.</p>
+        </section>
+    }
+    else
+    {
+        <form autocomplete="off" @onsubmit:preventDefault>
+            <section>
+                <h1>Modification</h1>
+                <label for="name">Nom</label>
+                <input id="name" type="text" @bind="character.Name"/>
+
+                <label for="description">Description</label>
+                <textarea id="description" @bind="character.Description"></textarea>
+
+                <label for="commentary">Commentaire</label>
+                <textarea id="commentary" @bind="character.Commentary"></textarea>
+                
+                <button type="button" @onclick="OnSubmit" >Modifier</button>
+            </section>
+            <section>
+                <InputFile OnChange="@OnImageSelected" accept="image/*"/>
+
+                <div id="result">
+                    @if (!string.IsNullOrWhiteSpace(previewUrl))
+                    {
+                        <img src="@previewUrl" alt="Aperçu de l’image"/>
+                    }
+                    else
+                    {
+                        <span>Aucune image sélectionnée</span>
+                    }
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(previewUrl))
+                {
+                    <div id="preview">
+                        <div>
+                            <img style="transform: translate(-50%, -50%)
+                                                   translateX(@(character.ThumbnailX)%)
+                                                   translateY(@(-character.ThumbnailY)%)
+                                                   scale(@(character.ThumbnailS)%);"
+                                 src="@previewUrl"
+                                 alt="Aperçu miniature"/>
+                        </div>
+                        <div>
+                            <h2>Miniature</h2>
+
+                            <label for="thumbnail-x">Décalage X</label>
+                            <input id="thumbnail-x" type="range" min="-100" max="100"
+                                   @bind="character.ThumbnailX"/>
+                            <span>@character.ThumbnailX%</span>
+                            <label for="thumbnail-y">Décalage Y</label>
+                            <input id="thumbnail-y" type="range" min="-100" max="100"
+                                   @bind="character.ThumbnailY"/>
+                            <span>@character.ThumbnailY%</span>
+                            <label for="thumbnail-s">Échelle</label>
+                            <input id="thumbnail-s" type="range" min="25" max="250"
+                                   @bind="character.ThumbnailS"/>
+                            <span>@character.ThumbnailS%</span>
+                        </div>
+                    </div>
+                }
+            </section>
+        </form>
+    }
+</main>
+
+@code {
+    private const long MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 2 Mo
+
+    [Parameter] public int Id { get; set; }
+
+    private Character? character;
+    private IBrowserFile? selectedImage;
+    private string? previewUrl;
+    private bool isLoaded;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await using var context = new WarhammerDbContext();
+
+        character = context.Characters.First(x => x.Id == Id);
+        previewUrl = $"/warhammer/characters/{character.Id}.png";
+        isLoaded = true;
+    }
+    
+    private async Task OnImageSelected(InputFileChangeEventArgs e)
+    {
+        selectedImage = e.File;
+
+        await using var stream = selectedImage.OpenReadStream(maxAllowedSize: MAX_IMAGE_SIZE);
+        using var memory = new MemoryStream();
+
+        await stream.CopyToAsync(memory);
+
+        previewUrl = $"data:image/png;base64,{Convert.ToBase64String(memory.ToArray())}";
+        StateHasChanged();
+    }
+
+    private async Task OnSubmit()
+    {
+        await using var context = new WarhammerDbContext();
+        context.Characters.Update(character!);
+        await context.SaveChangesAsync();
+    }
+
+}

@@ -6,86 +6,81 @@
 <main>
     @if (character != null)
     {
-        <section id="details">
-            <span class="sub">Carte de personnage</span>
-            <header>
-                <div>
-                    <h1>@(character?.Name ?? ">Inconnu<")</h1>
-                    @if (character!.ClanName != null)
-                    {
-                        <span>@character.ClanName</span>
-                    }
-                </div>
-                <div>
-                    <span>Créé le @character.CreatedAt.ToShortDateString()</span>
-                    @if (character.UpdatedAt != null)
-                    {
-                        <span>Modifié le @character.UpdatedAt?.ToShortDateString()</span>
-                    }
-                </div>
-            </header>
-            <section>
-                <div id="description">
-                    @if (character.Description != null)
-                    {
-                        <span class="sub">Description</span>
-                        <p>@character.Description</p>
-                    }
-                    <p>@character.Commentary</p>
-                </div>
-                <div id="stats">
-                    <span class="sub">Statistiques</span>
-                    <div>
-                        <article>
-                            <span>Batailles</span>
-                            <strong>@character.TotalBattles</strong>
-                        </article>
-                        <article>
-                            <span>Morts</span>
-                            <strong>@character.TotalDeaths</strong>
-                        </article>
-                        <article>
-                            <span>Kills participés</span>
-                            <strong>@character.TotalKillsParticipating</strong>
-                        </article>
-                        <article>
-                            <span>Kills d'unité</span>
-                            <strong>@character.TotalUnitKills</strong>
-                        </article>
-                        <article>
-                            <span>Objectifs</span>
-                            <strong>@character.TotalObjectives</strong>
-                        </article>
-                        <article>
-                            <span>Charges ratées</span>
-                            <strong>@character.TotalFailedCharges</strong>
-                        </article>
-                        <article>
-                            <span>Sauvegardes impossibles</span>
-                            <strong>@character.TotalImpossibleSaves</strong>
-                        </article>
-                        <article>
-                            <span>Dégâts infligés</span>
-                            <strong>@character.TotalDamageDone</strong>
-                        </article>
-                        <article>
-                            <span>Dégâts subis</span>
-                            <strong>@character.TotalDamageTaken</strong>
-                        </article>
-                        <article>
-                            <span>Dégâts bloqués</span>
-                            <strong>@character.TotalDamageBlocked</strong>
-                        </article>
-                    </div>
-                </div>
-            </section>
-        </section>
         <a href="/warhammer/characters/@(Id).png" target="_blank" id="image">
             <span>#@character.Id</span>
-            <img style="margin: -@(character.ThumbnailY)px 0 0 -@(character.ThumbnailX)px;
-            scale: @(character.ThumbnailS)%;"
-                 src="@character.GetUrlImage()" alt="@character.Name"/>
+            <div>
+                <img style="transform: translate(-50%, -50%)
+                    translateX(@(character.ThumbnailX)%)
+                translateY(@(-character.ThumbnailY)%)
+                scale(@(character.ThumbnailS)%);"
+                     src="@character.GetUrlImage()"
+                     alt="@character.Name"/>
+            </div>
         </a>
+        <section>
+            <div id="header">
+                <div>
+                    <h1>@(character.Name ?? ">Inconnu<")</h1>
+                    <span class="femboy-color">@character.ClanName</span>
+                </div>
+                <span>Créé le @character.CreatedAt.ToString("dd/MM/yyyy")</span>
+            </div>
+            <hr/>
+            <div id="stats">
+                <article>
+                    <img src="@Assets["images/icons/kill_icon.png"]" alt="kill icon"/>
+                    <div>
+                        <span>@character.TotalKillsParticipating</span>
+                        <span>(+@(character.TotalUnitKills - character.TotalKillsParticipating))</span>
+                    </div>
+                </article>
+                <article>
+                    <span>@character.TotalDeaths</span>
+                    <img src="@Assets["images/icons/dead_icon.png"]" alt="dead icon"/>
+                </article>
+                <article>
+                    <span>@character.TotalBattles</span>
+                    <img src="@Assets["images/icons/match_icon.png"]" alt="battle icon"/>
+                </article>
+                <article>
+                    <span>@character.TotalDamageBlocked</span>
+                    <img src="@Assets["images/icons/blocked_icon.png"]" alt="blocked icon"/>
+                </article>
+                <article>
+                    <span>@character.TotalImpossibleSaves</span>
+                    <img src="@Assets["images/icons/save_icon.png"]" alt="save icon"/>
+                </article>
+                <article>
+                    <span>@character.TotalDamageTaken</span>
+                    <img src="@Assets["images/icons/hurt_icon.png"]" alt="hurt icon"/>
+                </article>
+                <article>
+                    <span>@character.TotalObjectives</span>
+                    <img src="@Assets["images/icons/objective_icon.png"]" alt="hurt icon"/>
+                </article>
+                <article>
+                    <span>@character.TotalDamageDone</span>
+                    <img src="@Assets["images/icons/damage_icon.png"]" alt="damage icon"/>
+                </article>
+                <article>
+                    <span>@character.TotalFailedCharges</span>
+                    <img src="@Assets["images/icons/fail_icon.png"]" alt="fail icon"/>
+                </article>
+            </div>
+            <div id="infos">
+                <p>@character.Description</p>
+                <p>@character.Commentary</p>
+            </div>
+            <div id="paints">
+                @foreach (var cp in characterPaints)
+                {
+                    <div style="background: @("#" + cp.Paint.Hex);"
+                         tooltip-text="@cp.Paint.Name"
+                         class="tooltip">
+                    </div>
+                }
+            </div>
+        </section>
     }
     else
     {
@@ -108,12 +103,16 @@
     [Parameter] public int Id { get; set; }
 
     private CharacterDetail? character;
+    private CharacterPaint[] characterPaints = [];
     private bool isLoaded;
 
     protected override async Task OnInitializedAsync()
     {
         await using var context = new WarhammerDbContext();
         character = await context.CharacterDetails.FirstOrDefaultAsync(x => x.Id == (uint)Id);
+        characterPaints = await context.CharacterPaints.Where(x => x.CharacterId == (uint)Id)
+                              .Include(x => x.Paint)
+                              .ToArrayAsync();
         isLoaded = true;
     }
 

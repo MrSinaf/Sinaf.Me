@@ -47,6 +47,7 @@
         await using var context = new WarhammerDbContext();
         characters = await context.Characters
                                   .OrderByDescending(x => x.Id)
+                                  .Where(x => x.Published)
                                   .Select(x => new Character
                                   {
                                       Id = x.Id,

@@ -25,6 +25,8 @@ public partial class Character
 
     public DateTime? UpdatedAt { get; set; }
 
+    public bool Published { get; set; }
+
     public virtual ICollection<BattleUnitCharacter> BattleUnitCharacters { get; set; } = new List<BattleUnitCharacter>();
 
     public virtual ICollection<CharacterPaint> CharacterPaints { get; set; } = new List<CharacterPaint>();

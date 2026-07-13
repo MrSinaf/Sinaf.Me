@@ -261,6 +261,7 @@ public partial class WarhammerDbContext : DbContext
                 .HasColumnName("name")
                 .UseCollation("utf8mb3_uca1400_ai_ci")
                 .HasCharSet("utf8mb3");
+            entity.Property(e => e.Published).HasColumnName("published");
             entity.Property(e => e.ThumbnailS)
                 .HasDefaultValueSql("'100'")
                 .HasColumnType("tinyint(3) unsigned")
