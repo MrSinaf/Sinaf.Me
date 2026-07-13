@@ -13,6 +13,7 @@
 * {
     --background-color: #021a1a;
     --background-color-secondary: #042222;
+    --background-color-tiersary: #061515;
     --background-color-green: #03614b;
     --button-color-background: #085442;
     --button-color-background--hover: #06302c;
@@ -161,6 +162,21 @@ button {
 
 /* CLASSES -------------------------------------------------------------------------------------- */
 
+.tooltip {
+    position: relative;
+}
+
+.tooltip:hover::after {
+    content: attr(tooltip-text);
+    position: absolute;
+    z-index: 100000;
+    top: 20px;
+    pointer-events: none;
+    background: var(--background-color-green);
+    padding: 2px 5px;
+    font-size: 0.75rem;
+}
+
 .femboy-color {
     color: #e2a5ea;
 }
@@ -174,7 +190,7 @@ button {
     image-rendering: pixelated;
 }
 
-.button {
+.button, button {
     font-size: 1rem;
     border: none;
     background: var(--button-color-background);
