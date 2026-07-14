@@ -6,7 +6,13 @@
 <main>
     <h1>Connexion</h1>
     <form method="post" action="/api/auth/login">
+        <input type="hidden" name="returnUrl" value="@ReturnUrl"/>
         <input id="password" name="password" type="password"/>
         <button class="button" type="submit">Connexion</button>
     </form>
 </main>
+
+@code {
+    [SupplyParameterFromQuery]
+    private string? ReturnUrl { get; set; }
+}

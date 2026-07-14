@@ -17,6 +17,8 @@ public class Auth : Controller
 	{
 		var form = await Request.ReadFormAsync();
 		var password = form["password"].ToString();
+		var returnUrl = form["returnUrl"].ToString();
+
 		
 		string? ip = Request.Headers["X-Forwarded-For"];
 		await using var context = new WebDbContext();
@@ -38,7 +40,7 @@ public class Auth : Controller
 			|| password != Environment.GetEnvironmentVariable("PASS"))
 		{
 			await context.SaveChangesAsync();
-			return Redirect("/");
+			return Redirect("/login");
 		}
 		
 		loginAttemp.Success = true;
@@ -58,6 +60,10 @@ public class Auth : Controller
 			CookieAuthenticationDefaults.AuthenticationScheme,
 			principal
 		);
+		
+		
+		if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
+			return LocalRedirect(returnUrl);
 		
 		return Redirect("/admin");
 	}
