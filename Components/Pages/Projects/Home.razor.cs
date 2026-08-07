@@ -9,11 +9,16 @@ public partial class Home : ComponentBase
 {
 	private Project[] projects = [];
 	
-	protected override async Task OnInitializedAsync()
+	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
+		if (!firstRender)
+			return;
+	
 		await using var context = new WebDbContext();
-		projects = await context.Projects.Include(x => x.ProjectLinks)
+		projects = await context.Projects
+								.Include(x => x.ProjectLinks)
 								.OrderByDescending(x => x.Order)
 								.ToArrayAsync();
+		StateHasChanged();
 	}
 }

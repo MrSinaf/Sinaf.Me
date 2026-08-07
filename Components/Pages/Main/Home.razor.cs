@@ -15,11 +15,16 @@ public partial class Home
 	private Project[] projects = [];
 	private Presence? presence;
 	
-	protected override async Task OnInitializedAsync()
+	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
+		if (!firstRender)
+			return;
+		
 		try
 		{
-			var webInterfaceFactory = new SteamWebInterfaceFactory("8E1A35F9D5533AAE3CD66A8E68ABF120");
+			var webInterfaceFactory = new SteamWebInterfaceFactory(
+				"8E1A35F9D5533AAE3CD66A8E68ABF120"
+			);
 			
 			var steamInterface = webInterfaceFactory
 					.CreateSteamWebInterface<SteamUser>(new HttpClient());
@@ -27,7 +32,8 @@ public partial class Home
 			
 			if (!string.IsNullOrEmpty(steamSummary.PlayingGameName))
 			{
-				var steamPlayerInterface = webInterfaceFactory.CreateSteamWebInterface<PlayerService>();
+				var steamPlayerInterface = webInterfaceFactory
+						.CreateSteamWebInterface<PlayerService>();
 				var games = await steamPlayerInterface.GetOwnedGamesAsync(
 					76561199117557684,
 					includeAppInfo: true,
@@ -58,10 +64,8 @@ public partial class Home
 				_                  => throw new ArgumentOutOfRangeException()
 			}, steamSummary.UserStatus.ToString().ToLower());
 		}
-		catch
-		{
-
-		}
+		catch { }
+		
 		await using var context = new WebDbContext();
 		var presences = await context.Presences.ToArrayAsync();
 		presence = presences[Random.Shared.Next(presences.Length)];

@@ -87,7 +87,9 @@
             <div id="projects__list">
                 @foreach (var project in projects)
                 {
-                    var link = project.ProjectLinks.OrderByDescending(x => x.Priority).FirstOrDefault();
+                    var link = project.ProjectLinks
+                                      .OrderByDescending(x => x.Priority)
+                                      .FirstOrDefault();
 
                     @if (link != null)
                     {
