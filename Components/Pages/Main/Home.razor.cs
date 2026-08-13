@@ -12,7 +12,8 @@ public partial class Home
 	private (string urlIcon, string status, string statusType)? steamProfil;
 	private (string name, string icon, string hours)? currentSteamGameInfos;
 	private ProjectRepository? lastPush;
-	private Project[] projects = [];
+	private Project[]? projects;
+	private Blog[]? blogs;
 	private Presence? presence;
 	
 	protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -76,6 +77,22 @@ public partial class Home
 		StateHasChanged();
 		projects = await context.Projects.Include(x => x.ProjectLinks)
 								.OrderByDescending(x => x.Order).Take(3).ToArrayAsync();
+		StateHasChanged();
+		blogs = await context.Blogs
+							 .Where(x => x.Published && x.PublishAt <= DateTime.Now)
+							 .OrderByDescending(x => x.PublishAt)
+							 .Take(3)
+							 .Select(x => new Blog
+							 {
+								 Id = x.Id,
+								 Title = x.Title,
+								 Content = x.Content.Length < 128
+										 ? x.Content
+										 : x.Content.Substring(0, 128),
+								 PublishAt = x.PublishAt,
+								 Published = x.Published
+							 })
+							 .ToArrayAsync();
 		StateHasChanged();
 	}
 }

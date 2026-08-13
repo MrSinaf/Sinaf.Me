@@ -1,0 +1,96 @@
+﻿main {
+
+}
+
+h1 {
+    margin-bottom: 2rem;
+}
+
+a {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    gap: 1rem;
+    background: var(--background-color-secondary);
+    text-decoration: none;
+    color: inherit;
+    border-radius: 10px;
+    transition: scale 0.2s ease-in-out;
+    margin-bottom: 10px;
+
+
+    @media (max-width:600px) {
+        flex-direction: column;
+    }
+
+    > img {
+        border-radius: 10px;
+        filter: blur(4px);
+        transition: filter 0.2s ease-in-out;
+        
+        
+        @media (max-width:600px) {
+            width: 92px;
+            text-align: center;
+            margin: 5px auto;
+        }
+    }
+
+
+    &:hover > img {
+        filter: blur(0);
+    }
+
+    > div {
+        width: 100%;
+        
+        > h2 {
+            margin: 5px 0;
+            
+            @media (max-width:600px) {
+                margin: 5px;
+            }
+        }
+        
+        > p {
+            margin: 5px;
+            wrap-flow: maximum;
+            overflow-wrap: break-word;
+            white-space: pre-wrap;
+            word-break: break-word;
+            
+            @media (max-width:1000px) {
+                font-size: 0.8rem;
+            }
+        }
+
+        > hr {
+            margin: 0 0 0 -1rem;
+            width: calc(100% + 1rem);
+            
+            @media (max-width:600px) {
+                width: 100%;
+                margin: 0;
+            }
+        }
+        
+        > span {
+            font-size: 0.8rem;
+            opacity: 0.6;
+            right: 5px;
+            bottom: 5px;
+            position: absolute;
+            
+            @media (max-width:600px) {
+                position: relative;
+                margin: 10px;
+            }
+        }
+        
+    }
+    
+    &:hover {
+        scale: 1.02;
+    }
+}

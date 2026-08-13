@@ -12,6 +12,8 @@ public partial class WebDbContext : DbContext
     {
     }
 
+    public virtual DbSet<Blog> Blogs { get; set; }
+
     public virtual DbSet<LoginAttemp> LoginAttemps { get; set; }
 
     public virtual DbSet<Presence> Presences { get; set; }
@@ -27,6 +29,28 @@ public partial class WebDbContext : DbContext
         modelBuilder
             .UseCollation("utf8mb4_uca1400_ai_ci")
             .HasCharSet("utf8mb4");
+
+        modelBuilder.Entity<Blog>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("blogs");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("id");
+            entity.Property(e => e.Content).HasColumnName("content");
+            entity.Property(e => e.PublishAt)
+                .HasColumnType("datetime")
+                .HasColumnName("publish_at");
+            entity.Property(e => e.Published).HasColumnName("published");
+            entity.Property(e => e.Title)
+                .HasMaxLength(64)
+                .HasColumnName("title")
+                .UseCollation("utf8mb3_uca1400_ai_ci")
+                .HasCharSet("utf8mb3");
+        });
 
         modelBuilder.Entity<LoginAttemp>(entity =>
         {
@@ -89,6 +113,7 @@ public partial class WebDbContext : DbContext
                 .HasDefaultValueSql("'1'")
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("order");
+            entity.Property(e => e.Public).HasColumnName("public");
             entity.Property(e => e.UniqueName)
                 .HasMaxLength(32)
                 .HasColumnName("unique_name")

@@ -1,0 +1,48 @@
+﻿@page "/blogs/{id:int}"
+@using Markdig
+@using Microsoft.EntityFrameworkCore
+@using Sinaf.Me.Components.Customs
+@using Sinaf.Me.Data
+@using Sinaf.Me.Data.Web
+
+@if (notFound)
+{
+    <div id="error">
+        <p>Oups... Le blog #@Id.ToString("###-###-###") est introuvable...</p>
+    </div>
+}
+else if (blog is null)
+{
+    <PageTitle>Blog #@Id</PageTitle>
+    <Loading/>
+}
+else
+{
+    <PageTitle>@blog.Title</PageTitle>
+    <main>
+        <header>
+            <img src="blogs/@blog.Id/thumbnail.png" alt="thumbnail"/>
+            <div>
+                <h1>@blog.Title</h1>
+                <p>@blog.PublishAt?.ToString("dd/MM/yyyy")</p>
+            </div>
+        </header>
+        <section class="blog">
+            @((MarkupString)Markdown.ToHtml(blog.Content))
+        </section>
+    </main>
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+    private Blog? blog;
+    private bool notFound;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await using var context = new WebDbContext();
+        blog = await context.Blogs.FirstOrDefaultAsync(x => x.Id == Id);
+        notFound = blog is null;
+    }
+
+}

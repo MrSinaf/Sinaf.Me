@@ -217,6 +217,24 @@ span.sub {
     text-transform: uppercase;
     opacity: 60%;
 }
+/* BLOG ----------------------------------------------------------------------------------------- */
+.blog {
+    padding: 10px 0 0 0;
+    
+    h2 {
+        margin: 0 0 5px 0;
+        border-bottom: 1px dashed var(--accent-color);
+    }
+    
+    h3 {
+        margin: 0 0 5px 0;
+    }
+
+    p {
+        margin: 0 0 10px 0;
+        line-height: 1.4;
+    }
+}
 
 /* BLAZOR INTEGRATION --------------------------------------------------------------------------- */
 
