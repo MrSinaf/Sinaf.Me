@@ -7,7 +7,7 @@ namespace Sinaf.Me.Components.Pages.Projects;
 
 public partial class Home : ComponentBase
 {
-	private Project[] projects = [];
+	private Project[]? projects;
 	
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -16,6 +16,7 @@ public partial class Home : ComponentBase
 	
 		await using var context = new WebDbContext();
 		projects = await context.Projects
+								.Where(x => x.Public)
 								.Include(x => x.ProjectLinks)
 								.OrderByDescending(x => x.Order)
 								.ToArrayAsync();

@@ -13,7 +13,8 @@
       <img src="@Assets["images/okay.png"]" alt="okay"/>
    </div>
    <section id="projects">
-      @foreach (var project in projects)
+      @if (projects is not null)
+      foreach (var project in projects)
       {
          <div class="project">
             @if (File.Exists($"wwwroot/projects/{project.UniqueName}/icon.png"))
