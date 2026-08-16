@@ -11,7 +11,7 @@ public partial class BattleUnit
 
     public uint Kills { get; set; }
 
-    public uint Objectives { get; set; }
+    public uint Scores { get; set; }
 
     public uint FailedCharges { get; set; }
 
@@ -25,5 +25,5 @@ public partial class BattleUnit
 
     public virtual BattlePlayer BattlePlayer { get; set; } = null!;
 
-    public virtual ICollection<BattleUnitCharacter> BattleUnitCharacters { get; set; } = new List<BattleUnitCharacter>();
+    public virtual ICollection<BattleUnitsCharacter> BattleUnitsCharacters { get; set; } = new List<BattleUnitsCharacter>();
 }

@@ -15,10 +15,6 @@ public partial class Paint
 
     public uint? SubTypeId { get; set; }
 
-    public virtual ICollection<CharacterPaint> CharacterPaints { get; set; } = new List<CharacterPaint>();
-
-    public virtual ICollection<ClanPaint> ClanPaints { get; set; } = new List<ClanPaint>();
-
     public virtual PaintSubType? SubType { get; set; }
 
     public virtual PaintType Type { get; set; } = null!;

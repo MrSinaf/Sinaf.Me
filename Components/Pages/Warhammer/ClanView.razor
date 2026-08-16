@@ -1,0 +1,114 @@
+﻿@page "/warhammer/clans/{ClanUniqueName}"
+@using Microsoft.EntityFrameworkCore
+@using Sinaf.Me.Components.Customs
+@using Sinaf.Me.Data
+@using Sinaf.Me.Data.Warhammer
+
+<main>
+    @if (clan is null)
+    {
+        if (clanNotFound)
+        {
+            <p>Aucun clan nommé '@ClanUniqueName' trouvé! (‾◡◝)</p>
+        }
+        else
+        {
+            <Loading/>
+        }
+    }
+    else
+    {
+        <PageTitle>@clan.Name [WarClan]</PageTitle>
+        <h1>@clan.Name</h1>
+        <p>@clan.Currency</p>
+        @if (characters is not null)
+        {
+            <table>
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nom</th>
+                    <th>Type</th>
+                    <th>Bataille</th>
+                    <th>Victoire</th>
+                    <th>Tuer</th>
+                    <th>Mort</th>
+                    <th>Unit</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var character in characters)
+                {
+                    <tr @onclick="() => character.showDetails = !character.showDetails">
+                        <th class="no-select">@character.Id</th>
+                        <td class="no-select">@character.Name</td>
+                        <td class="no-select">@character.UnitType</td>
+                        <td class="no-select">0</td>
+                        <td class="no-select">0</td>
+                        <td class="no-select">0</td>
+                        <td class="no-select">0</td>
+                        <td class="no-select">@character.Unit</td>
+                    </tr>
+                    @if (character.showDetails)
+                    {
+                        <tr class="details">
+                            <td colspan="7">
+                                <div class="details-img">
+                                    <img src="warhammer/characters/@(character.Id).png"
+                                         alt="thumbnail"
+                                         style="transform: translate(-50%, -50%)
+                                             translateX(@(character.ThumbnailX)%)
+                                             translateY(@(-character.ThumbnailY)%)
+                                             scale(@(character.ThumbnailS)%);"/>
+                                </div>
+                                <div class="details-stats">
+                                    <p>
+                                        @character.Description
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <Loading/>
+        }
+    }
+</main>
+
+@code {
+    [Parameter] public string ClanUniqueName { get; set; }
+
+    private Clan? clan;
+    private CharacterDetail[]? characters;
+
+    private bool clanNotFound;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return;
+
+        await using var context = new WarhammerDbContext();
+        clan = await context.Clans.FirstOrDefaultAsync(x => x.UniqueName == ClanUniqueName);
+        clanNotFound = clan == null;
+        StateHasChanged();
+
+        if (clanNotFound)
+            return;
+
+        characters = await context.CharacterDetails
+                                  .Where(x => x.ClanId == clan!.Id)
+                                  .OrderBy(x => x.OrderType)
+                                  .ThenBy(x => x.OrderUnit)
+                                  .ThenBy(x => x.Unit)
+                                  .ThenBy(x => x.Name)
+                                  .ToArrayAsync();
+        StateHasChanged();
+    }
+
+}

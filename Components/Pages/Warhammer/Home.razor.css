@@ -1,151 +1,86 @@
 ﻿main {
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
-    overflow-x: hidden;
-
-    > p {
-        margin-bottom: 0;
+    
+    > h1 {
+        margin: 0 0 30px 0;
     }
-}
 
-#links {
-    margin: auto;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    gap: 30px;
-
-    h2 {
-        font-size: 4rem;
-        cursor: pointer;
-        margin: 10px;
-        transition: all 0.25s;
-
-        > a:any-link {
-            font-family: 'Orc Horde', sans-serif;
-            color: inherit;
-            text-align: center;
+    #clans {
+        > a {
+            position: relative;
+            display: flex;
+            align-items: center;
             text-decoration: none;
+            flex-direction: column;
+            transition: scale 0.2s linear;
+            border-right: 2px solid var(--accent-color);
+            border-left: 2px solid var(--accent-color);
+            margin-bottom: 10px;
+            overflow: hidden;
+            background: var(--background-color-secondary);
+
+            >img {
+                position: absolute;
+                z-index: -1;
+                filter: blur(3px);
+                opacity: 0.2;
+            }
+
+            > h2 {
+                width: 100%;
+                font-size: 3rem;
+                text-align: center;
+            }
+
+            > p {
+                text-align: center;
+                color: white;
+                opacity: 0.8;
+                margin: 0 0 5px 0;
+            }
+
+            &:hover {
+                scale: 0.98;
+            }
         }
     }
 
-    h2:hover {
-        scale: 1.2;
-    }
-
-    @media (max-width: 1150px) {
-        flex-direction: column;
-        gap: 0;
-    }
-}
-
-#stats {
-    margin: 20px;
-
-    > div {
+    #categories {
         display: flex;
-        position: relative;
-        margin: 20px;
-        padding: 14px;
-        border-radius: 5px;
-        background: var(--background-color-secondary);
-        gap: 20px;
-        height: 200px;
-        justify-content: center;
-
-        > div:last-of-type {
-            width: 100%;
-            max-width: 900px;
-
-            > .match__list {
-                overflow-y: scroll;
-                height: 136px;
-
-                .match {
-                    font-size: 0.8rem;
-                    background: rgb(0 0 0 / 0.3);
-                    margin: 5px 0;
-                    padding: 5px;
-                    border-radius: 5px;
-
-                    > div {
-                        display: flex;
-                        width: 100%;
-
-                        > div:last-child {
-                            margin-left: auto;
-                        }
-                    }
-
-                    &.win {
-                        border-left: 5px solid var(--color-green-light);
-                    }
-
-                    &.lose {
-                        border-left: 5px solid var(--color-red-light);
-                    }
-
-                    .match__result {
-                        &.win {
-                            color: var(--color-green-light);
-                        }
-
-                        &.lose {
-                            color: var(--color-red-light);
-                        }
-                    }
-
-                    .match__compo {
-                        font-size: 0.7rem;
-                        font-weight: bold;
-                    }
-
-                    .match__map {
-                        font-size: 0.7rem;
-                        opacity: 0.5;
-                        font-style: italic;
-                    }
-
-                    .match__time {
-                        font-size: 0.7rem;
-                        color: #ba78f8;
-                    }
-
-                    .match__date {
-                        font-size: 0.7rem;
-                        margin-inline-start: auto;
-                    }
-
-                    .match__player {
-                        margin: 0 5px;
-                    }
-                }
-            }
+        flex-wrap: wrap;
+        gap: 10px;
+        
+        > a {
+            flex: 1;
+            background: rgb(0 0 0 / 0.25);
+            transition: all 0.1s linear;
+            text-decoration: none;
+            font-size: 1.5rem;
+            text-align: center;
+            color: white;
+            border-radius: 5px;
+            padding: 10px;
+            text-transform: uppercase;
+            align-self: center;
             
-            @media (max-width: 1000px) {
-                display: none;
+            &:hover {
+                scale: 0.98;
+                color: var(--accent-color);
             }
         }
-
-        > span {
-            position: absolute;
-            left: 50px;
-            bottom: 20px;
-            opacity: 0.5;
-            
-            @media (max-width: 1000px) {
-                display: none;
-            }
+    }
+    
+    #news {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+        > h2 {
+            margin: 30px 0 15px 0;
         }
-
-        h4 {
-            opacity: 50%;
-            margin: 0;
-        }
-
-        @media (max-width: 1000px) {
-            height: initial;
+        
+        > img {
+            max-width: 100%;
+            max-height: 384px;
         }
     }
 }

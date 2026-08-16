@@ -11,8 +11,6 @@ public partial class Battle
 
     public DateTime Date { get; set; }
 
-    public uint? Points { get; set; }
-
     public virtual ICollection<BattlePlayer> BattlePlayers { get; set; } = new List<BattlePlayer>();
 
     public virtual Game Game { get; set; } = null!;

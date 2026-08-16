@@ -20,21 +20,19 @@ public partial class WarhammerDbContext : DbContext
 
     public virtual DbSet<BattleUnit> BattleUnits { get; set; }
 
-    public virtual DbSet<BattleUnitCharacter> BattleUnitCharacters { get; set; }
+    public virtual DbSet<BattleUnitsCharacter> BattleUnitsCharacters { get; set; }
 
     public virtual DbSet<Character> Characters { get; set; }
 
     public virtual DbSet<CharacterDetail> CharacterDetails { get; set; }
 
-    public virtual DbSet<CharacterPaint> CharacterPaints { get; set; }
-
     public virtual DbSet<Citation> Citations { get; set; }
 
     public virtual DbSet<Clan> Clans { get; set; }
 
-    public virtual DbSet<ClanPaint> ClanPaints { get; set; }
-
     public virtual DbSet<Game> Games { get; set; }
+
+    public virtual DbSet<Image> Images { get; set; }
 
     public virtual DbSet<Paint> Paints { get; set; }
 
@@ -48,6 +46,8 @@ public partial class WarhammerDbContext : DbContext
 
     public virtual DbSet<Unit> Units { get; set; }
 
+    public virtual DbSet<UnitType> UnitTypes { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
@@ -60,9 +60,9 @@ public partial class WarhammerDbContext : DbContext
 
             entity.ToTable("armies");
 
-            entity.HasIndex(e => e.RaceId, "armies_races_id_fk");
+            entity.HasIndex(e => e.GameId, "armies_games_id_fk");
 
-            entity.HasIndex(e => e.GameId, "factions_game_id_fk");
+            entity.HasIndex(e => e.RaceId, "armies_races_id_fk");
 
             entity.Property(e => e.Id)
                 .HasColumnType("int(10) unsigned")
@@ -71,7 +71,7 @@ public partial class WarhammerDbContext : DbContext
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("game_id");
             entity.Property(e => e.Name)
-                .HasMaxLength(128)
+                .HasMaxLength(64)
                 .HasColumnName("name")
                 .UseCollation("utf8mb3_uca1400_ai_ci")
                 .HasCharSet("utf8mb3");
@@ -82,7 +82,7 @@ public partial class WarhammerDbContext : DbContext
             entity.HasOne(d => d.Game).WithMany(p => p.Armies)
                 .HasForeignKey(d => d.GameId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("factions_game_id_fk");
+                .HasConstraintName("armies_games_id_fk");
 
             entity.HasOne(d => d.Race).WithMany(p => p.Armies)
                 .HasForeignKey(d => d.RaceId)
@@ -102,15 +102,12 @@ public partial class WarhammerDbContext : DbContext
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("id");
             entity.Property(e => e.Date)
-                .HasDefaultValueSql("curdate()")
+                .HasDefaultValueSql("curtime()")
                 .HasColumnType("datetime")
                 .HasColumnName("date");
             entity.Property(e => e.GameId)
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("game_id");
-            entity.Property(e => e.Points)
-                .HasColumnType("int(10) unsigned")
-                .HasColumnName("points");
 
             entity.HasOne(d => d.Game).WithMany(p => p.Battles)
                 .HasForeignKey(d => d.GameId)
@@ -126,14 +123,24 @@ public partial class WarhammerDbContext : DbContext
 
             entity.HasIndex(e => e.BattleId, "battle_players_battles_id_fk");
 
-            entity.HasIndex(e => e.PlayerId, "battle_players_players_id_fk");
+            entity.HasIndex(e => e.ArmyId, "battles__players_armies_id_fk");
+
+            entity.HasIndex(e => e.ClanId, "battles__players_clans_id_fk");
+
+            entity.HasIndex(e => e.PlayerId, "battles__players_players_id_fk");
 
             entity.Property(e => e.Id)
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("id");
+            entity.Property(e => e.ArmyId)
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("army_id");
             entity.Property(e => e.BattleId)
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("battle_id");
+            entity.Property(e => e.ClanId)
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("clan_id");
             entity.Property(e => e.PlayerId)
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("player_id");
@@ -142,11 +149,6 @@ public partial class WarhammerDbContext : DbContext
                 .HasForeignKey(d => d.BattleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("battle_players_battles_id_fk");
-
-            entity.HasOne(d => d.Player).WithMany(p => p.BattlePlayers)
-                .HasForeignKey(d => d.PlayerId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("battle_players_players_id_fk");
         });
 
         modelBuilder.Entity<BattleUnit>(entity =>
@@ -181,9 +183,9 @@ public partial class WarhammerDbContext : DbContext
             entity.Property(e => e.Kills)
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("kills");
-            entity.Property(e => e.Objectives)
+            entity.Property(e => e.Scores)
                 .HasColumnType("int(10) unsigned")
-                .HasColumnName("objectives");
+                .HasColumnName("scores");
 
             entity.HasOne(d => d.BattlePlayer).WithMany(p => p.BattleUnits)
                 .HasForeignKey(d => d.BattlePlayerId)
@@ -191,25 +193,22 @@ public partial class WarhammerDbContext : DbContext
                 .HasConstraintName("battle_units_battle_players_id_fk");
         });
 
-        modelBuilder.Entity<BattleUnitCharacter>(entity =>
+        modelBuilder.Entity<BattleUnitsCharacter>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.HasKey(e => new { e.CharacterId, e.BattleUnitId })
+                .HasName("PRIMARY")
+                .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
 
-            entity.ToTable("battle_unit_characters");
+            entity.ToTable("battle-units__characters");
 
-            entity.HasIndex(e => e.BattleUnitId, "battle_unit_characters_battle_units_id_fk");
+            entity.HasIndex(e => e.BattleUnitId, "battle-units__characters_battle_units_id_fk");
 
-            entity.HasIndex(e => e.CharacterId, "battle_unit_characters_characters_id_fk");
-
-            entity.Property(e => e.Id)
-                .HasColumnType("int(10) unsigned")
-                .HasColumnName("id");
-            entity.Property(e => e.BattleUnitId)
-                .HasColumnType("int(10) unsigned")
-                .HasColumnName("battle_unit_id");
             entity.Property(e => e.CharacterId)
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("character_id");
+            entity.Property(e => e.BattleUnitId)
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("battle_unit_id");
             entity.Property(e => e.IsDead)
                 .HasDefaultValueSql("b'0'")
                 .HasColumnType("bit(1)")
@@ -218,15 +217,15 @@ public partial class WarhammerDbContext : DbContext
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("kills_participating");
 
-            entity.HasOne(d => d.BattleUnit).WithMany(p => p.BattleUnitCharacters)
+            entity.HasOne(d => d.BattleUnit).WithMany(p => p.BattleUnitsCharacters)
                 .HasForeignKey(d => d.BattleUnitId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("battle_unit_characters_battle_units_id_fk");
+                .HasConstraintName("battle-units__characters_battle_units_id_fk");
 
-            entity.HasOne(d => d.Character).WithMany(p => p.BattleUnitCharacters)
+            entity.HasOne(d => d.Character).WithMany(p => p.BattleUnitsCharacters)
                 .HasForeignKey(d => d.CharacterId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("battle_unit_characters_characters_id_fk");
+                .HasConstraintName("battle-units__characters_characters_id_fk");
         });
 
         modelBuilder.Entity<Character>(entity =>
@@ -237,17 +236,14 @@ public partial class WarhammerDbContext : DbContext
 
             entity.HasIndex(e => e.ClanId, "characters_clans_id_fk");
 
+            entity.HasIndex(e => e.UnitId, "characters_units_id_fk");
+
             entity.Property(e => e.Id)
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("id");
             entity.Property(e => e.ClanId)
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("clan_id");
-            entity.Property(e => e.Commentary)
-                .HasMaxLength(256)
-                .HasColumnName("commentary")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
@@ -261,7 +257,6 @@ public partial class WarhammerDbContext : DbContext
                 .HasColumnName("name")
                 .UseCollation("utf8mb3_uca1400_ai_ci")
                 .HasCharSet("utf8mb3");
-            entity.Property(e => e.Published).HasColumnName("published");
             entity.Property(e => e.ThumbnailS)
                 .HasDefaultValueSql("'100'")
                 .HasColumnType("tinyint(3) unsigned")
@@ -272,13 +267,19 @@ public partial class WarhammerDbContext : DbContext
             entity.Property(e => e.ThumbnailY)
                 .HasColumnType("int(11)")
                 .HasColumnName("thumbnail_y");
-            entity.Property(e => e.UpdatedAt)
-                .HasColumnType("datetime")
-                .HasColumnName("updated_at");
+            entity.Property(e => e.UnitId)
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("unit_id");
 
             entity.HasOne(d => d.Clan).WithMany(p => p.Characters)
                 .HasForeignKey(d => d.ClanId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("characters_clans_id_fk");
+
+            entity.HasOne(d => d.Unit).WithMany(p => p.Characters)
+                .HasForeignKey(d => d.UnitId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("characters_units_id_fk");
         });
 
         modelBuilder.Entity<CharacterDetail>(entity =>
@@ -288,19 +289,8 @@ public partial class WarhammerDbContext : DbContext
                 .ToView("character-details");
 
             entity.Property(e => e.ClanId)
-                .HasDefaultValueSql("'0'")
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("clan_id");
-            entity.Property(e => e.ClanName)
-                .HasMaxLength(64)
-                .HasColumnName("clan_name")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
-            entity.Property(e => e.Commentary)
-                .HasMaxLength(256)
-                .HasColumnName("commentary")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
@@ -317,6 +307,14 @@ public partial class WarhammerDbContext : DbContext
                 .HasColumnName("name")
                 .UseCollation("utf8mb3_uca1400_ai_ci")
                 .HasCharSet("utf8mb3");
+            entity.Property(e => e.OrderType)
+                .HasDefaultValueSql("'1'")
+                .HasColumnType("tinyint(3) unsigned")
+                .HasColumnName("order_type");
+            entity.Property(e => e.OrderUnit)
+                .HasDefaultValueSql("'1'")
+                .HasColumnType("tinyint(3) unsigned")
+                .HasColumnName("order_unit");
             entity.Property(e => e.ThumbnailS)
                 .HasDefaultValueSql("'100'")
                 .HasColumnType("tinyint(3) unsigned")
@@ -327,75 +325,16 @@ public partial class WarhammerDbContext : DbContext
             entity.Property(e => e.ThumbnailY)
                 .HasColumnType("int(11)")
                 .HasColumnName("thumbnail_y");
-            entity.Property(e => e.TotalBattles)
-                .HasColumnType("bigint(21)")
-                .HasColumnName("total_battles");
-            entity.Property(e => e.TotalDamageBlocked)
-                .HasPrecision(32)
-                .HasColumnName("total_damage_blocked");
-            entity.Property(e => e.TotalDamageDone)
-                .HasPrecision(32)
-                .HasColumnName("total_damage_done");
-            entity.Property(e => e.TotalDamageTaken)
-                .HasPrecision(32)
-                .HasColumnName("total_damage_taken");
-            entity.Property(e => e.TotalDeaths)
-                .HasPrecision(22)
-                .HasColumnName("total_deaths");
-            entity.Property(e => e.TotalFailedCharges)
-                .HasPrecision(32)
-                .HasColumnName("total_failed_charges");
-            entity.Property(e => e.TotalImpossibleSaves)
-                .HasPrecision(32)
-                .HasColumnName("total_impossible_saves");
-            entity.Property(e => e.TotalKillsParticipating)
-                .HasPrecision(32)
-                .HasColumnName("total_kills_participating");
-            entity.Property(e => e.TotalObjectives)
-                .HasPrecision(32)
-                .HasColumnName("total_objectives");
-            entity.Property(e => e.TotalUnitKills)
-                .HasPrecision(32)
-                .HasColumnName("total_unit_kills");
-            entity.Property(e => e.UpdatedAt)
-                .HasColumnType("datetime")
-                .HasColumnName("updated_at");
-        });
-
-        modelBuilder.Entity<CharacterPaint>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("character_paints");
-
-            entity.HasIndex(e => e.CharacterId, "character_paints_characters_id_fk");
-
-            entity.HasIndex(e => new { e.PaintId, e.CharacterId }, "character_paints_pk").IsUnique();
-
-            entity.Property(e => e.Id)
-                .HasColumnType("int(10) unsigned")
-                .HasColumnName("id");
-            entity.Property(e => e.CharacterId)
-                .HasColumnType("int(10) unsigned")
-                .HasColumnName("character_id");
-            entity.Property(e => e.Comment)
-                .HasMaxLength(256)
-                .HasColumnName("comment")
+            entity.Property(e => e.Unit)
+                .HasMaxLength(64)
+                .HasColumnName("unit")
                 .UseCollation("utf8mb3_uca1400_ai_ci")
                 .HasCharSet("utf8mb3");
-            entity.Property(e => e.PaintId)
-                .HasColumnType("int(10) unsigned")
-                .HasColumnName("paint_id");
-
-            entity.HasOne(d => d.Character).WithMany(p => p.CharacterPaints)
-                .HasForeignKey(d => d.CharacterId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("character_paints_characters_id_fk");
-
-            entity.HasOne(d => d.Paint).WithMany(p => p.CharacterPaints)
-                .HasForeignKey(d => d.PaintId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("character_paints_paints_id_fk");
+            entity.Property(e => e.UnitType)
+                .HasMaxLength(32)
+                .HasColumnName("unit_type")
+                .UseCollation("utf8mb3_uca1400_ai_ci")
+                .HasCharSet("utf8mb3");
         });
 
         modelBuilder.Entity<Citation>(entity =>
@@ -425,50 +364,37 @@ public partial class WarhammerDbContext : DbContext
 
             entity.ToTable("clans");
 
+            entity.HasIndex(e => e.UniqueName, "clans_pk").IsUnique();
+
+            entity.HasIndex(e => e.RaceId, "clans_races_id_fk");
+
             entity.Property(e => e.Id)
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("id");
+            entity.Property(e => e.Currency)
+                .HasMaxLength(128)
+                .HasDefaultValueSql("''")
+                .HasColumnName("currency")
+                .UseCollation("utf8mb3_uca1400_ai_ci")
+                .HasCharSet("utf8mb3");
             entity.Property(e => e.Name)
                 .HasMaxLength(64)
                 .HasColumnName("name")
                 .UseCollation("utf8mb3_uca1400_ai_ci")
                 .HasCharSet("utf8mb3");
-        });
-
-        modelBuilder.Entity<ClanPaint>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("clan_paints");
-
-            entity.HasIndex(e => e.PaintId, "clan_paints_paints_id_fk");
-
-            entity.HasIndex(e => new { e.ClanId, e.PaintId }, "clan_paints_pk_2").IsUnique();
-
-            entity.Property(e => e.Id)
+            entity.Property(e => e.RaceId)
                 .HasColumnType("int(10) unsigned")
-                .HasColumnName("id");
-            entity.Property(e => e.ClanId)
-                .HasColumnType("int(10) unsigned")
-                .HasColumnName("clan_id");
-            entity.Property(e => e.Comment)
-                .HasMaxLength(256)
-                .HasColumnName("comment")
+                .HasColumnName("race_id");
+            entity.Property(e => e.UniqueName)
+                .HasMaxLength(64)
+                .HasColumnName("unique_name")
                 .UseCollation("utf8mb3_uca1400_ai_ci")
                 .HasCharSet("utf8mb3");
-            entity.Property(e => e.PaintId)
-                .HasColumnType("int(10) unsigned")
-                .HasColumnName("paint_id");
 
-            entity.HasOne(d => d.Clan).WithMany(p => p.ClanPaints)
-                .HasForeignKey(d => d.ClanId)
+            entity.HasOne(d => d.Race).WithMany(p => p.Clans)
+                .HasForeignKey(d => d.RaceId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("clan_paints_clans_id_fk");
-
-            entity.HasOne(d => d.Paint).WithMany(p => p.ClanPaints)
-                .HasForeignKey(d => d.PaintId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("clan_paints_paints_id_fk");
+                .HasConstraintName("clans_races_id_fk");
         });
 
         modelBuilder.Entity<Game>(entity =>
@@ -483,6 +409,34 @@ public partial class WarhammerDbContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(128)
                 .HasColumnName("name")
+                .UseCollation("utf8mb3_uca1400_ai_ci")
+                .HasCharSet("utf8mb3");
+        });
+
+        modelBuilder.Entity<Image>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("images");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("id");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("curtime()")
+                .HasColumnType("datetime")
+                .HasColumnName("created_at");
+            entity.Property(e => e.GridX)
+                .HasDefaultValueSql("'1'")
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("grid-x");
+            entity.Property(e => e.GridY)
+                .HasDefaultValueSql("'1'")
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("grid-y");
+            entity.Property(e => e.Path)
+                .HasMaxLength(64)
+                .HasColumnName("path")
                 .UseCollation("utf8mb3_uca1400_ai_ci")
                 .HasCharSet("utf8mb3");
         });
@@ -597,17 +551,13 @@ public partial class WarhammerDbContext : DbContext
 
             entity.ToTable("units");
 
-            entity.HasIndex(e => e.ArmieId, "units_armies_id_fk");
+            entity.HasIndex(e => e.RaceId, "units_races_id_fk");
+
+            entity.HasIndex(e => e.TypeId, "units_unit_types_id_fk");
 
             entity.Property(e => e.Id)
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("id");
-            entity.Property(e => e.ArmieId)
-                .HasColumnType("int(10) unsigned")
-                .HasColumnName("armie_id");
-            entity.Property(e => e.Cost)
-                .HasColumnType("int(10) unsigned")
-                .HasColumnName("cost");
             entity.Property(e => e.Name)
                 .HasMaxLength(64)
                 .HasColumnName("name")
@@ -617,37 +567,46 @@ public partial class WarhammerDbContext : DbContext
                 .HasDefaultValueSql("'1'")
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("number");
+            entity.Property(e => e.Order)
+                .HasDefaultValueSql("'1'")
+                .HasColumnType("tinyint(3) unsigned")
+                .HasColumnName("order");
+            entity.Property(e => e.RaceId)
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("race_id");
+            entity.Property(e => e.TypeId)
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("type_id");
 
-            entity.HasOne(d => d.Armie).WithMany(p => p.Units)
-                .HasForeignKey(d => d.ArmieId)
+            entity.HasOne(d => d.Race).WithMany(p => p.Units)
+                .HasForeignKey(d => d.RaceId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("units_armies_id_fk");
+                .HasConstraintName("units_races_id_fk");
 
-            entity.HasMany(d => d.Characters).WithMany(p => p.Units)
-                .UsingEntity<Dictionary<string, object>>(
-                    "CharacterUnit",
-                    r => r.HasOne<Character>().WithMany()
-                        .HasForeignKey("CharacterId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("character_units_characters_id_fk"),
-                    l => l.HasOne<Unit>().WithMany()
-                        .HasForeignKey("UnitId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("character_units_units_id_fk"),
-                    j =>
-                    {
-                        j.HasKey("UnitId", "CharacterId")
-                            .HasName("PRIMARY")
-                            .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
-                        j.ToTable("character_units");
-                        j.HasIndex(new[] { "CharacterId" }, "character_units_characters_id_fk");
-                        j.IndexerProperty<uint>("UnitId")
-                            .HasColumnType("int(10) unsigned")
-                            .HasColumnName("unit_id");
-                        j.IndexerProperty<uint>("CharacterId")
-                            .HasColumnType("int(10) unsigned")
-                            .HasColumnName("character_id");
-                    });
+            entity.HasOne(d => d.Type).WithMany(p => p.Units)
+                .HasForeignKey(d => d.TypeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("units_unit_types_id_fk");
+        });
+
+        modelBuilder.Entity<UnitType>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("unit_types");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("id");
+            entity.Property(e => e.Name)
+                .HasMaxLength(32)
+                .HasColumnName("name")
+                .UseCollation("utf8mb3_uca1400_ai_ci")
+                .HasCharSet("utf8mb3");
+            entity.Property(e => e.Order)
+                .HasDefaultValueSql("'1'")
+                .HasColumnType("tinyint(3) unsigned")
+                .HasColumnName("order");
         });
 
         OnModelCreatingPartial(modelBuilder);

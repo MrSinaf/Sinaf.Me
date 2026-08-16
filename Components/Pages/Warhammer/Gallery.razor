@@ -1,0 +1,36 @@
+﻿@page "/warhammer/gallery"
+@using Microsoft.EntityFrameworkCore
+@using Sinaf.Me.Data
+@using Sinaf.Me.Data.Warhammer
+
+
+<main>
+    <h1>Ma Galerie</h1>
+    <p>
+        Je vous partage ici, toutes mes images (screens, photos, dessins) concernant l'univers 
+        Warhammer \(•ω•`)o!
+    </p>
+    <section>
+        @foreach (var i in images)
+        {
+            <a class="item" style="--grid-size-x: @i.GridX; --grid-size-y: @i.GridY">
+                <img
+                    src="@i.Path"
+                    loading="lazy"
+                    alt="@i.Id"/>
+            </a>
+        }
+    </section>
+</main>
+
+@code {
+
+    private Image[] images = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        await using var context = new WarhammerDbContext();
+        images = await context.Images.OrderByDescending(x => x.Id).ToArrayAsync();
+    }
+
+}

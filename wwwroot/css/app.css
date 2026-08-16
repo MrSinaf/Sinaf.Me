@@ -142,7 +142,7 @@ nav > p {
     color: white;
 }
 
-input, textarea {
+input, textarea, select {
     border: none;
     border-bottom: 1px solid var(--accent-color);
     padding: 5px 10px;
@@ -208,7 +208,7 @@ button {
     text-decoration: none;
 }
 
-.button:hover {
+.button:hover, button:hover {
     background: var(--button-color-background--hover);
     cursor: pointer;
 }
@@ -216,6 +216,10 @@ button {
 span.sub {
     text-transform: uppercase;
     opacity: 60%;
+}
+
+.no-select {
+    user-select: none;
 }
 /* BLOG ----------------------------------------------------------------------------------------- */
 .blog {
@@ -277,7 +281,7 @@ h1:focus {
 }
 
 @media (max-width: 750px) {
-    html {
+    html, select, input {
         font-size: 12px;
     }
 }

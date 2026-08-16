@@ -11,9 +11,11 @@ public partial class BattlePlayer
 
     public uint PlayerId { get; set; }
 
+    public uint? ClanId { get; set; }
+
+    public uint ArmyId { get; set; }
+
     public virtual Battle Battle { get; set; } = null!;
 
     public virtual ICollection<BattleUnit> BattleUnits { get; set; } = new List<BattleUnit>();
-
-    public virtual Player Player { get; set; } = null!;
 }

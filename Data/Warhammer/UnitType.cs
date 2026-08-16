@@ -3,15 +3,13 @@ using System.Collections.Generic;
 
 namespace Sinaf.Me.Data.Warhammer;
 
-public partial class Race
+public partial class UnitType
 {
     public uint Id { get; set; }
 
     public string Name { get; set; } = null!;
 
-    public virtual ICollection<Army> Armies { get; set; } = new List<Army>();
-
-    public virtual ICollection<Clan> Clans { get; set; } = new List<Clan>();
+    public byte Order { get; set; }
 
     public virtual ICollection<Unit> Units { get; set; } = new List<Unit>();
 }
