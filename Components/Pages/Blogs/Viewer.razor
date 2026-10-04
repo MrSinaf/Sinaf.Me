@@ -32,7 +32,7 @@ else
     protected override async Task OnParametersSetAsync()
     {
         await using var context = new WebDbContext();
-        blog = await context.Blogs.FirstOrDefaultAsync(x => x.Id == Id);
+        blog = await context.Blogs.FirstOrDefaultAsync(x => x.Id == Id && x.Published);
         notFound = blog is null;
     }
 
