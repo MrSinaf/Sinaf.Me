@@ -20,16 +20,7 @@ else
 {
     <PageTitle>@blog.Title</PageTitle>
     <main>
-        <header>
-            <img src="blogs/@blog.Id/thumbnail.png" alt="thumbnail"/>
-            <div>
-                <h1>@blog.Title</h1>
-                <p>@blog.PublishAt?.ToString("dd/MM/yyyy")</p>
-            </div>
-        </header>
-        <section class="blog">
-            @((MarkupString)Markdown.ToHtml(blog.Content))
-        </section>
+        <BlogViewer Blog="blog"></BlogViewer>
     </main>
 }
 

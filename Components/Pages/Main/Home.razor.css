@@ -313,6 +313,11 @@
     
     > h2 {
         text-align: right;
+        margin-bottom: 10px;
+        
+        > span {
+            font-size: 0.8rem;
+        }
     }
     
     a {
@@ -329,6 +334,7 @@
         transition: scale 0.2s ease-in-out;
         margin-bottom: 10px;
         max-width: 900px;
+        width: 100%;
 
 
         @media (max-width:600px) {
@@ -337,20 +343,16 @@
 
         > img {
             border-radius: 10px;
-            filter: blur(4px);
-            transition: filter 0.2s ease-in-out;
 
+            &.blur {
+                filter: blur(6px);
+            }
 
             @media (max-width:600px) {
                 width: 92px;
                 text-align: center;
                 margin: 5px auto;
             }
-        }
-
-
-        &:hover > img {
-            filter: blur(0);
         }
 
         > div {

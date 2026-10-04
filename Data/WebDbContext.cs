@@ -26,10 +26,6 @@ public partial class WebDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder
-            .UseCollation("utf8mb4_uca1400_ai_ci")
-            .HasCharSet("utf8mb4");
-
         modelBuilder.Entity<Blog>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -37,19 +33,17 @@ public partial class WebDbContext : DbContext
             entity.ToTable("blogs");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("id");
             entity.Property(e => e.Content).HasColumnName("content");
             entity.Property(e => e.PublishAt)
+                .HasDefaultValueSql("'NULL'")
                 .HasColumnType("datetime")
                 .HasColumnName("publish_at");
             entity.Property(e => e.Published).HasColumnName("published");
             entity.Property(e => e.Title)
                 .HasMaxLength(64)
-                .HasColumnName("title")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .HasColumnName("title");
         });
 
         modelBuilder.Entity<LoginAttemp>(entity =>
@@ -66,9 +60,7 @@ public partial class WebDbContext : DbContext
                 .HasColumnName("date");
             entity.Property(e => e.Ip)
                 .HasMaxLength(32)
-                .HasColumnName("ip")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .HasColumnName("ip");
             entity.Property(e => e.Success).HasColumnName("success");
         });
 
@@ -83,9 +75,7 @@ public partial class WebDbContext : DbContext
                 .HasColumnName("id");
             entity.Property(e => e.Libelle)
                 .HasMaxLength(128)
-                .HasColumnName("libelle")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .HasColumnName("libelle");
         });
 
         modelBuilder.Entity<Project>(entity =>
@@ -101,14 +91,10 @@ public partial class WebDbContext : DbContext
                 .HasColumnName("id");
             entity.Property(e => e.Description)
                 .HasMaxLength(256)
-                .HasColumnName("description")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .HasColumnName("description");
             entity.Property(e => e.Name)
                 .HasMaxLength(32)
-                .HasColumnName("name")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .HasColumnName("name");
             entity.Property(e => e.Order)
                 .HasDefaultValueSql("'1'")
                 .HasColumnType("int(10) unsigned")
@@ -116,9 +102,7 @@ public partial class WebDbContext : DbContext
             entity.Property(e => e.Public).HasColumnName("public");
             entity.Property(e => e.UniqueName)
                 .HasMaxLength(32)
-                .HasColumnName("unique_name")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .HasColumnName("unique_name");
         });
 
         modelBuilder.Entity<ProjectLink>(entity =>
@@ -135,9 +119,7 @@ public partial class WebDbContext : DbContext
             entity.Property(e => e.IsIntern).HasColumnName("isIntern");
             entity.Property(e => e.Name)
                 .HasMaxLength(32)
-                .HasColumnName("name")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .HasColumnName("name");
             entity.Property(e => e.Priority)
                 .HasColumnType("tinyint(3) unsigned")
                 .HasColumnName("priority");
@@ -146,9 +128,7 @@ public partial class WebDbContext : DbContext
                 .HasColumnName("project_id");
             entity.Property(e => e.Url)
                 .HasMaxLength(256)
-                .HasColumnName("url")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .HasColumnName("url");
 
             entity.HasOne(d => d.Project).WithMany(p => p.ProjectLinks)
                 .HasForeignKey(d => d.ProjectId)
@@ -171,19 +151,13 @@ public partial class WebDbContext : DbContext
                 .HasColumnName("added");
             entity.Property(e => e.Branch)
                 .HasMaxLength(32)
-                .HasColumnName("branch")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .HasColumnName("branch");
             entity.Property(e => e.Commit)
                 .HasMaxLength(128)
-                .HasColumnName("commit")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .HasColumnName("commit");
             entity.Property(e => e.CommitId)
                 .HasMaxLength(64)
-                .HasColumnName("commit_id")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .HasColumnName("commit_id");
             entity.Property(e => e.Modified)
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("modified");
@@ -195,9 +169,7 @@ public partial class WebDbContext : DbContext
                 .HasColumnName("removed");
             entity.Property(e => e.Repository)
                 .HasMaxLength(128)
-                .HasColumnName("repository")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .HasColumnName("repository");
             entity.Property(e => e.Update)
                 .HasColumnType("datetime")
                 .HasColumnName("update");

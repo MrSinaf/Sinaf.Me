@@ -1,0 +1,38 @@
+﻿@page "/blogs/{id:long}/edit"
+@using Microsoft.AspNetCore.Authorization
+@using Sinaf.Me.Components.Customs
+@attribute [Authorize]
+
+@if (notFound)
+{
+    <main>
+        <div id="error">
+            <p>Oups... Le blog #@Id.ToString("###-###-###") est introuvable...</p>
+        </div>
+    </main>
+}
+else if (blog is null)
+{
+    <PageTitle>Édition > Blog #@Id</PageTitle>
+    <Loading/>
+}
+else
+{
+    <PageTitle>Édition > @blog.Title</PageTitle>
+    <main>
+        <header>
+            <button @onclick="OnSaveClick">Sauvegarder@(isModified ? "*" : "")</button>
+            <button @onclick="OnPublishClick">
+                @(blog.Published ? "Dépublier" : "Publier")
+            </button>
+        </header>
+        <section>
+            <div id="edit-area">
+                <textarea value="@blog.Content" @oninput="OnContentInput"></textarea>
+            </div>
+            <div id="show-area">
+                <BlogViewer Blog="blog"/>
+            </div>
+        </section>
+    </main>
+}

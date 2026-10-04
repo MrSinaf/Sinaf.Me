@@ -1,0 +1,62 @@
+﻿@page "/pervert-gate"
+
+<main>
+    <h1>L'accès au contenu explicite</h1>
+    <p>
+        Vous pouvez retrouver dans ce site des propos suggestives, voir même explicites.<br/>
+        C'est ainsi que j'ai décidé de présenter mon site! ♪(´▽｀)
+    </p>
+    <p>
+        Mais concernant les images, pour éviter d'exposer certains contenu à des *récolteurs de 
+        charbon*. J'ai décidé de les masquer partiellement en les rendant flous. Ce qui vous 
+        amène normalement ici :3
+    </p>
+    <h2>Désactiver la censure <img src="@Assets["/r34/pussy.png"]" alt="potit chat"/></h2> 
+    <p>
+        Si vous souhaitez pouvoir <span class="femboy-color">regarder sous ma jupe</span>, vous 
+        allez avant devoir confirmer ce qui suit :
+    </p>
+    <ul>
+        <li>J'ai entre 18 et 120 ans;</li>
+        <li>Je consent d'être exposé à du contenu explicite;</li>
+        <li>Je comprend que cela ne concerne uniquement le site Sinaf.Me;</li>
+        <li>J'ai compris... Tout ça pour voir du c*l en furry en plus;</li>
+        <li>
+            Je comprends que ce contenu explicite contribue avant tout à l'ambiance du site;
+        </li>
+        <li>Je promet, que si ma mère me le demande, c'est un site de por-peinture!;</li>
+    </ul>
+    
+    @if (isPervert)
+    {
+        <p>
+            Appuyer sur le bouton ci-dessous vaut la révocation que toutes les conditions ci-dessus 
+            sont remplies.
+        </p>
+    }
+    else
+    {
+        <p>
+            Appuyer sur le bouton ci-dessous vaut la confirmation que toutes les conditions 
+            ci-dessus sont remplies.
+        </p>
+    }
+    <button @onclick="OnButtonClick">@(isPervert ? "Je révoque" : "Je confirme")</button>
+</main>
+
+@code {
+
+    [Inject] public IJSRuntime JS { get; set; }
+    public bool isPervert;
+
+    protected override async Task OnInitializedAsync()
+        => isPervert = await PervertGate.GetConfirmed(JS);
+
+    private async Task OnButtonClick()
+    {
+        isPervert = !isPervert;
+        await PervertGate.SetConfirmed(JS, isPervert);
+        StateHasChanged();
+    }
+
+}

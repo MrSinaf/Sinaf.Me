@@ -1,0 +1,11 @@
+﻿h2 {
+    position: relative;
+}
+
+img {
+    height: 64px;
+    opacity: 0.3;
+    rotate: 15deg;
+    position: absolute;
+    top: -15px;
+}

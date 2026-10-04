@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.JSInterop;
 using Sinaf.Me.Data;
 using Sinaf.Me.Data.Web;
 using Steam.Models.SteamCommunity;
@@ -9,12 +11,15 @@ namespace Sinaf.Me.Components.Pages;
 
 public partial class Home
 {
+	[Inject] private IJSRuntime JS { get; set; } = null!;
+	
 	private (string urlIcon, string status, string statusType)? steamProfil;
 	private (string name, string icon, string hours)? currentSteamGameInfos;
 	private ProjectRepository? lastPush;
 	private Project[]? projects;
 	private Blog[]? blogs;
 	private Presence? presence;
+	private bool isPervert;
 	
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -79,20 +84,25 @@ public partial class Home
 								.OrderByDescending(x => x.Order).Take(3).ToArrayAsync();
 		StateHasChanged();
 		blogs = await context.Blogs
-							 .Where(x => x.Published && x.PublishAt <= DateTime.Now)
+							 .Where(x => x.Published)
 							 .OrderByDescending(x => x.PublishAt)
 							 .Take(3)
 							 .Select(x => new Blog
 							 {
 								 Id = x.Id,
 								 Title = x.Title,
-								 Content = x.Content.Length < 128
+								 Content = (x.Content.Length < 128
 										 ? x.Content
-										 : x.Content.Substring(0, 128),
+										 : x.Content.Substring(0, 128) + "...").Replace("\n", ""),
 								 PublishAt = x.PublishAt,
 								 Published = x.Published
 							 })
 							 .ToArrayAsync();
+		
+		foreach (var blog in blogs)
+			blog.Content = blog.Content.Split('#')[0];
+		
+		isPervert = await PervertGate.GetConfirmed(JS);
 		StateHasChanged();
 	}
 }
