@@ -1,0 +1,52 @@
+﻿header {
+    display: flex;
+    border-bottom: 2px solid var(--accent-color);
+    margin-bottom: 15px;
+
+    > img {
+        width: 128px;
+        height: 128px;
+        
+        &.blur {
+            filter: blur(6px);
+        }
+        
+        @media (max-width: 600px) {
+            margin: auto;
+        }
+    }
+
+    > div {
+        padding: 0 10px;
+        display: flex;
+        justify-content: space-between;
+        flex: 1;
+
+        > h1 {
+            font-size: 2rem;
+            margin-top: auto;
+        }
+        
+        > p {
+            text-align: right;
+            margin: 0;
+        }
+
+        @media (max-width: 600px) {
+            flex-direction: column;
+        }
+    }
+
+    @media (max-width: 600px) {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 1090px) {
+    margin: 0 20px;
+}
+
+@media (max-width: 600px) {
+    padding: 10px;
+    margin: 0 5px;
+}

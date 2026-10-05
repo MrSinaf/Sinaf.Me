@@ -1,0 +1,31 @@
+﻿@using Markdig
+@using Sinaf.Me.Data.Web
+@inject IJSRuntime JS
+
+<header>
+    @if (isPervert)
+    {
+        <img src="blogs/@Blog.Id/thumbnail.png" alt="thumbnail"/>
+    }
+    else
+    {
+        <img src="blogs/@Blog.Id/thumbnail.png" alt="thumbnail" class="blur"/>
+    }
+    <div>
+        <h1>@Blog.Title</h1>
+        <p>@Blog.PublishAt?.ToString("dd/MM/yyyy")</p>
+    </div>
+</header>
+<section class="blog">
+    @((MarkupString)Markdown.ToHtml(Blog.Content))
+</section>
+
+@code {
+
+    [Parameter] public Blog Blog { get; set; }
+    private bool isPervert;
+
+    protected override async Task OnParametersSetAsync()
+        => isPervert = await PervertGate.GetConfirmed(JS);
+
+}
