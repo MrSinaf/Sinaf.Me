@@ -54,6 +54,10 @@ p {
     font-size: 1rem;
 }
 
+i {
+    opacity: 0.6;
+}
+
 h1 {
     color: var(--accent-color);
     font-size: 3rem;
