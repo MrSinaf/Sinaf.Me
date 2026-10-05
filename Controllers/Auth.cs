@@ -18,14 +18,14 @@ public class Auth : Controller
 		var form = await Request.ReadFormAsync();
 		var password = form["password"].ToString();
 		var returnUrl = form["returnUrl"].ToString();
-
+		
 		
 		string? ip = Request.Headers["X-Forwarded-For"];
 		await using var context = new WebDbContext();
 		var loginAttemp = new LoginAttemp
 		{
-			Ip = ip ?? HttpContext.Connection.RemoteIpAddress?.ToString() ?? 
-				string.Empty,
+			Ip = ip ?? HttpContext.Connection.RemoteIpAddress?.ToString() ??
+					string.Empty,
 			Date = DateTime.Now
 		};
 		
@@ -40,7 +40,9 @@ public class Auth : Controller
 			|| password != Environment.GetEnvironmentVariable("PASS"))
 		{
 			await context.SaveChangesAsync();
-			return Redirect("/login");
+			return Redirect(
+				"/login" + (!string.IsNullOrWhiteSpace(returnUrl) ? $"/?returnUrl={returnUrl}" : "")
+			);
 		}
 		
 		loginAttemp.Success = true;
@@ -61,11 +63,7 @@ public class Auth : Controller
 			principal
 		);
 		
-		
-		if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
-			return LocalRedirect(returnUrl);
-		
-		return Redirect("/admin");
+		return Redirect(!string.IsNullOrWhiteSpace(returnUrl) ? returnUrl : "/admin");
 	}
 	
 	[Route("logout")]

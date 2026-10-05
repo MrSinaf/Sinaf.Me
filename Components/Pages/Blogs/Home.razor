@@ -18,7 +18,7 @@
             {
                 @foreach (var blog in blogs)
                 {
-                    <a href="/blogs/@blog.Id">
+                    <a href="@($"/blogs/{blog.Id}" + (blog.Published ? string.Empty : "/edit"))">
                         @if (isPervert)
                         {
                             <img src="blogs/@blog.Id/thumbnail.png" alt="thumbnail"/>
