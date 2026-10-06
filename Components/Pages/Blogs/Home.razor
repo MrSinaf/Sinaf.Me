@@ -30,7 +30,7 @@
                         <div>
                             <h2>@blog.Title</h2>
                             <hr/>
-                            <p>@blog.Content</p>
+                            <p>@((MarkupString)blog.Content)</p>
                             <span>
                                 @blog.PublishAt?.ToString("dd/MM/yyyy") @(blog.Published
                                                                                 ? ""

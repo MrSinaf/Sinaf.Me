@@ -34,7 +34,7 @@ public partial class Edit : ComponentBase
 	{
 		await using var context = new WebDbContext();
 		blog!.Published = !blog.Published;
-		blog!.PublishAt ??= DateTime.Now;
+		blog!.PublishAt = DateTime.Now;
 		context.Attach(blog);
 		context.Entry(blog).Property(x => x.Published).IsModified = true;
 		context.Entry(blog).Property(x => x.PublishAt).IsModified = true;
