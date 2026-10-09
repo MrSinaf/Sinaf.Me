@@ -1,4 +1,5 @@
 ﻿@page "/warhammer/citations"
+@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.EntityFrameworkCore
 @using Sinaf.Me.Data
 @using Sinaf.Me.Data.Warhammer
@@ -10,6 +11,19 @@
         ou simplement des mots m'ont marqué ou bêtement fait rire. Voici une liste complète de ces
         citations!
     </p>
+    <AuthorizeView>
+        <Authorized>
+            <div>
+                <textarea placeholder="Citation à enregistrer..." @bind="citation.Content">
+                </textarea>
+                <div>
+                    <input placeholder="Source" @bind="citation.Source"/>
+                    <button type="button" @onclick="OnAddClick">Ajouter</button>
+                </div>
+            </div>
+            <p id="error">@errorMessage</p>
+        </Authorized>
+    </AuthorizeView>
 
     <section>
         @foreach (var citation in citations)
@@ -26,12 +40,39 @@
 
 @code {
 
-    private Citation[] citations = [];
-	
+    private List<Citation> citations = [];
+    private Citation citation = new () { Content = string.Empty, Source = string.Empty };
+    private string errorMessage = "";
+
     protected override async Task OnInitializedAsync()
     {
         await using var context = new WarhammerDbContext();
-        citations = await context.Citations.ToArrayAsync();
+        citations = await context.Citations.ToListAsync();
+    }
+
+    private async Task OnAddClick()
+    {
+        errorMessage = string.Empty;
+        Console.WriteLine(citation.Content);
+        if (citation.Content.Length < 5)
+        {
+            errorMessage = "La citation doit contenir au moins 5 caractères.";
+            StateHasChanged();
+            return;
+        }
+        if (citation.Source.Length < 5)
+        {
+            errorMessage = "La source doit contenir au moins 5 caractères.";
+            StateHasChanged();
+            return;
+        }
+
+        citation.Content = citation.Content.Replace("\n", "<br/>");
+        await using var context = new WarhammerDbContext();
+        await context.Citations.AddAsync(citation);
+        await context.SaveChangesAsync();
+        citations.Add(citation);
+        citation = new Citation { Content = string.Empty, Source = string.Empty };
     }
 
 }

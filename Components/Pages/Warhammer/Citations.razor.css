@@ -2,17 +2,13 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
-    transition: all 0.1s linear;
 
     > figure {
         position: relative;
-        width: 100%;
         margin: 0;
         padding: 10px 10px;
         border-radius: 5px;
         background: var(--background-color-secondary);
-        transition: all 0.1s linear;
-        animation: div-in 0.1s;
         overflow: hidden;
     }
 
@@ -29,7 +25,6 @@
     }
 
     blockquote {
-        position: relative;
         margin: 0;
         color: var(--text-color);
         font-size: 0.9rem;
@@ -41,8 +36,8 @@
     figcaption {
         margin-top: 16px;
         padding-top: 10px;
-        border-top: 1px solid color-mix(in srgb, var(--text-color) 25%, transparent);
-        color: color-mix(in srgb, var(--text-color) 75%, transparent);
+        border-top: 1px solid rgb(255 255 255 / 0.25);
+        opacity: 0.75;
         font-size: 0.9rem;
         text-align: right;
     }
@@ -52,4 +47,26 @@
         font-style: normal;
         font-weight: bold;
     }
+}
+
+main > div {
+    display: flex;
+    gap: 5px;
+    margin: 10px 15px;
+    
+    > :first-child {
+        flex: 1;
+    }
+    
+    > :last-child {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+#error {
+    text-align: center;
+    color: red;
+    margin: 0 0 10px 0;
 }
