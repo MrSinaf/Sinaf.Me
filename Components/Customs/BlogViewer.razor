@@ -17,12 +17,12 @@
     </div>
 </header>
 <section class="blog">
-    @((MarkupString)Markdown.ToHtml(Blog.Content))
+    @((MarkupString)Markdown.ToHtml(Blog.Content.Replace("@local/", $"/blogs/{Blog.Id}/")))
 </section>
 
 @code {
 
-    [Parameter] public Blog Blog { get; set; }
+    [Parameter] public Blog Blog { get; set; } = null!;
     private bool isPervert;
 
     protected override async Task OnParametersSetAsync()

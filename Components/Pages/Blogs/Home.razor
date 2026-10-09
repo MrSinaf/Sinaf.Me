@@ -1,48 +1,71 @@
 ﻿@page "/blogs"
+@using Microsoft.AspNetCore.Components.Authorization
 @using Sinaf.Me.Components.Customs
 
 <PageTitle>Blogs</PageTitle>
 
-    <main>
-        <h1>Blogs</h1>
-        <p>
-            Vous aimez la lecture ? Alors voici la liste de mes blogs sur divers sujets.<br/>
-        </p>
-        @if (blogs is not null)
+<main>
+    <h1>Blogs</h1>
+    <p>
+        Vous aimez la lecture ? Alors voici la liste de mes blogs sur divers sujets.<br/>
+    </p>
+    <AuthorizeView>
+        <Authorized>
+            <div id="create-panel">
+                <div>
+                    <label for="thumbnail-file">
+                        <img src="@thumbnailPreviewUrl" alt="thumbnail" style="cursor: pointer"/>
+                    </label>
+                    <InputFile id="thumbnail-file"
+                               OnChange="OnThumbnailSelected"
+                               accept="image/png"
+                               style="display: none"/>
+                </div>
+                <div>
+                    <input type="text" @bind="blog.Title" placeholder="Titre du blog"/>
+                    <div>
+                        <p>@errorMessage</p>
+                        <button type="button" @onclick="OnCreateClick">Créer et éditer</button>
+                    </div>
+                </div>
+            </div>
+        </Authorized>
+    </AuthorizeView>
+    @if (blogs is not null)
+    {
+        @if (!blogs.Any())
         {
-            @if (!blogs.Any())
+            <p>Aucun blog pour le moment...</p>
+        }
+        else
+        {
+            @foreach (var blog in blogs)
             {
-                <p>Aucun blog pour le moment...</p>
-            }
-            else
-            {
-                @foreach (var blog in blogs)
-                {
-                    <a href="@($"/blogs/{blog.Id}" + (blog.Published ? string.Empty : "/edit"))">
-                        @if (isPervert)
-                        {
-                            <img src="blogs/@blog.Id/thumbnail.png" alt="thumbnail"/>
-                        }
-                        else
-                        {
-                            <img src="blogs/@blog.Id/thumbnail.png" alt="thumbnail" class="blur"/>
-                        }
-                        <div>
-                            <h2>@blog.Title</h2>
-                            <hr/>
-                            <p>@((MarkupString)blog.Content)</p>
-                            <span>
+                <a href="@($"/blogs/{blog.Id}" + (blog.Published ? string.Empty : "/edit"))">
+                    @if (isPervert)
+                    {
+                        <img src="blogs/@blog.Id/thumbnail.png" alt="thumbnail"/>
+                    }
+                    else
+                    {
+                        <img src="blogs/@blog.Id/thumbnail.png" alt="thumbnail" class="blur"/>
+                    }
+                    <div>
+                        <h2>@blog.Title</h2>
+                        <hr/>
+                        <p>@((MarkupString)blog.Content)</p>
+                        <span>
                                 @blog.PublishAt?.ToString("dd/MM/yyyy") @(blog.Published
                                                                                 ? ""
                                                                                 : "[non publié]")
                             </span>
-                        </div>
-                    </a>
-                }
+                    </div>
+                </a>
             }
         }
-        else
-        {
-            <Loading/>
-        }
-    </main>
+    }
+    else
+    {
+        <Loading/>
+    }
+</main>
