@@ -19,11 +19,11 @@ public class WebhooksController : Controller
 			return Ok("Not MrSinaf");
 		
 		await using var context = new WebDbContext();
-		var repository = await context.ProjectRepositories.FirstOrDefaultAsync(x => x.Repository ==
-																root.GetProperty("repository")
-																		.GetProperty("name")
-																		.GetString()
-									  );
+		var repository = await context.ProjectRepositories.FirstOrDefaultAsync(x =>
+				x.Repository == root.GetProperty("repository")
+									.GetProperty("name")
+									.GetString()
+		);
 		if (repository == null)
 			return Ok("Repository not found in sinaf.me");
 		

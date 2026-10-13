@@ -46,7 +46,7 @@
 
 @code {
 
-    [Inject] public IJSRuntime JS { get; set; }
+    [Inject] public IJSRuntime JS { get; set; } = null!;
     public bool isPervert;
 
     protected override async Task OnInitializedAsync()
