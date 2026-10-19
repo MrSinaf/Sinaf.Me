@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.JSInterop;
 using Sinaf.Me.Data;
 using Sinaf.Me.Data.Web;
 
@@ -10,13 +9,11 @@ namespace Sinaf.Me.Components.Pages.Blogs;
 
 public partial class Home
 {
-	[Inject] private IJSRuntime JS { get; set; } = null!;
 	[Inject] private AuthenticationStateProvider ASP { get; set; } = null!;
 	[Inject] private NavigationManager Nav { get; set; } = null!;
 	[Inject] private IWebHostEnvironment Env { get; set; } = null!;
 	
 	private Blog[]? blogs;
-	private bool isPervert;
 	private string errorMessage = string.Empty;
 	
 	private readonly Blog blog = new () {Title = string.Empty};
@@ -48,7 +45,6 @@ public partial class Home
 		foreach (var blog in blogs)
 			blog.Content = blog.Content.Split('#')[0];
 		
-		isPervert = await PervertGate.GetConfirmed(JS);
 		StateHasChanged();
 	}
 	

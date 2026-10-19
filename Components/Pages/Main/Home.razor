@@ -129,14 +129,7 @@
                 @foreach (var blog in blogs)
                 {
                     <a href="/blogs/@blog.Id">
-                        @if (isPervert)
-                        {
-                            <img src="blogs/@blog.Id/thumbnail.png" alt="thumbnail"/>
-                        }
-                        else
-                        {
-                            <img src="blogs/@blog.Id/thumbnail.png" alt="thumbnail" class="blur"/>
-                        }
+                        <PervImg Src=@($"blogs/{blog.Id}/thumbnail.png") Alt="thumbnail"/>
                         <div>
                             <h2>@blog.Title</h2>
                             <hr/>

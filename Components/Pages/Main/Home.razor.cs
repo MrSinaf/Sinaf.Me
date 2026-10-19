@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.JSInterop;
+﻿using Microsoft.EntityFrameworkCore;
 using Sinaf.Me.Data;
 using Sinaf.Me.Data.Web;
 using Steam.Models.SteamCommunity;
@@ -11,15 +9,12 @@ namespace Sinaf.Me.Components.Pages;
 
 public partial class Home
 {
-	[Inject] private IJSRuntime JS { get; set; } = null!;
-	
 	private (string urlIcon, string status, string statusType)? steamProfil;
 	private (string name, string icon, string hours)? currentSteamGameInfos;
 	private ProjectRepository? lastPush;
 	private Project[]? projects;
 	private Blog[]? blogs;
 	private Presence? presence;
-	private bool isPervert;
 	
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -102,7 +97,6 @@ public partial class Home
 		foreach (var blog in blogs)
 			blog.Content = blog.Content.Split('#')[0];
 		
-		isPervert = await PervertGate.GetConfirmed(JS);
 		StateHasChanged();
 	}
 }

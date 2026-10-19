@@ -1,53 +1,86 @@
 ﻿@page "/pervert-gate"
+@using Sinaf.Me.Components.Customs
 
 <main>
     <h1>L'accès au contenu explicite</h1>
     <p>
-        Vous pouvez retrouver dans ce site des propos suggestives, voir même explicites.<br/>
-        C'est ainsi que j'ai décidé de présenter mon site! ♪(´▽｀)
+        Vous pouvez retrouver sur ce site des propos suggestifs, voire même explicites qui ne
+        seront pas censurés.<br/>
+        C'est ainsi que j'ai décidé de présenter mon site!<span class="no-wrap">@("♪(< . >)")</span>
     </p>
     <p>
-        Mais concernant les images, pour éviter d'exposer certains contenu à des *récolteurs de 
-        charbon*. J'ai décidé de les masquer partiellement en les rendant flous. Ce qui vous 
-        amène normalement ici :3
+        Les images suggestives du genre - jupe courte~, cuisses abondantes, pose vulgaire,
+        chaussettes hautes, sous-vêtements visibles, traces blanches - Ne sont pas non plus
+        censurées.
     </p>
-    <h2>Désactiver la censure <img src="@Assets["/r34/pussy.png"]" alt="potit chat"/></h2> 
     <p>
-        Si vous souhaitez pouvoir <span class="femboy-color">regarder sous ma jupe</span>, vous 
+        Mais, par égard pour les *récolteurs de charbon*. J'ai décidé de masquer partiellement
+        les images clairement explicites, en les rendant floues. Ce qui vous amène normalement
+        ici :3
+    </p>
+    <figure>
+        <div>
+            <PervImg @ref="pervImg"
+                     src="@Assets["/r34/femboy_ejac.gif"]"
+                     alt="femboy qui éjacule"
+                     pixels="35"/>
+        </div>
+        <figcaption>
+            Juste pour l'exemple: un GIF très
+            <span class="femboy-color">explicite d'un femboy</span> qui jouit~ (pas moi, du moins
+            pour le moment)
+        </figcaption>
+    </figure>
+    <h2>Désactiver la censure <img src="@Assets["/r34/pussy.png"]" alt="potit chat"/></h2>
+    <p>
+        Si vous souhaitez pouvoir <span class="femboy-color">regarder sous ma jupe</span>, vous
         allez avant devoir confirmer ce qui suit :
     </p>
     <ul>
         <li>J'ai entre 18 et 120 ans;</li>
-        <li>Je consent d'être exposé à du contenu explicite;</li>
-        <li>Je comprend que cela ne concerne uniquement le site Sinaf.Me;</li>
+        <li>
+            Je suis conscient que le contenu suivant peut provoquer des pensées peu catholiques;
+        </li>
+        <li>Je consens d'être exposé à du contenu explicite;</li>
+        <li>Je comprends que cela ne concerne uniquement le site Sinaf.Me;</li>
         <li>J'ai compris... Tout ça pour voir du c*l en furry en plus;</li>
+        <li>J'ai compris que c'est aussi beaucoup de femboy;</li>
         <li>
             Je comprends que ce contenu explicite contribue avant tout à l'ambiance du site;
         </li>
-        <li>Je promet, que si ma mère me le demande, c'est un site de por-peinture!;</li>
+        <li>Je comprends que tous les personnages représentés sont majeurs et consentants;</li>
+        <li>Je promets, que si ma mère me le demande, c'est un site de por-peinture!;</li>
+        <li>Je certifie ne pas être ici “par accident” pour la troisième fois aujourd'hui;</li>
+        <li>Je comprends que “juste regarder” est rarement une excuse crédible;</li>
+        <li>
+            Je consens à entrer dans une zone où les cuisses ont potentiellement plus d'autorité
+            que la raison;
+        </li>
     </ul>
-    
+
     @if (isPervert)
     {
         <p>
-            Appuyer sur le bouton ci-dessous vaut la révocation que toutes les conditions ci-dessus 
-            sont remplies.
+            Cliquer sur le bouton ci-dessous vaut révocation de ma confirmation.
         </p>
     }
     else
     {
         <p>
-            Appuyer sur le bouton ci-dessous vaut la confirmation que toutes les conditions 
+            Cliquer sur le bouton ci-dessous vaut la confirmation que toutes les conditions
             ci-dessus sont remplies.
         </p>
     }
-    <button @onclick="OnButtonClick">@(isPervert ? "Je révoque" : "Je confirme")</button>
+    <button @onclick="OnButtonClick">
+        @(isPervert ? "Remets la censure, j'ai peur" : "Je confirme, défloute-moi ça")
+    </button>
 </main>
 
 @code {
 
     [Inject] public IJSRuntime JS { get; set; } = null!;
-    public bool isPervert;
+    private bool isPervert;
+    private PervImg pervImg;
 
     protected override async Task OnInitializedAsync()
         => isPervert = await PervertGate.GetConfirmed(JS);
@@ -56,6 +89,7 @@
     {
         isPervert = !isPervert;
         await PervertGate.SetConfirmed(JS, isPervert);
+        await pervImg.Reload();
         StateHasChanged();
     }
 

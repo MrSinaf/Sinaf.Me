@@ -1,11 +1,25 @@
 ﻿h2 {
     position: relative;
+    
+    > img {
+        height: 64px;
+        opacity: 0.3;
+        rotate: 15deg;
+        position: absolute;
+        top: -15px;
+        
+        @media (max-width: 350px){
+            display: none;
+        }
+    }
 }
 
-img {
-    height: 64px;
-    opacity: 0.3;
-    rotate: 15deg;
-    position: absolute;
-    top: -15px;
+figure > div {
+    overflow: hidden;
+    > img {
+        display: block;
+        margin: auto;
+        width: 100%;
+        max-width: 720px;
+    }
 }

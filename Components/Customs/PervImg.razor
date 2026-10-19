@@ -1,0 +1,28 @@
+﻿@inject IJSRuntime JS
+
+<img src="@Src" alt="@Alt" class="@CssClass" style="filter: blur(@(isPervert ? 0 : Pixels)px);"/>
+
+@code {
+
+    [Parameter] public string Src { get; set; } = string.Empty;
+    [Parameter] public string Alt { get; set; } = string.Empty;
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public int Pixels { get; set; } = 6;
+
+    private bool isPervert;
+
+    private string CssClass => string.Join(' ', new[] { Class, isPervert ? null : "blur" });
+
+    protected override async Task OnInitializedAsync()
+    {
+        isPervert = await PervertGate.GetConfirmed(JS);
+        StateHasChanged();
+    }
+
+    public async Task Reload()
+    {
+        isPervert = await PervertGate.GetConfirmed(JS);
+        StateHasChanged();
+    }
+
+}
