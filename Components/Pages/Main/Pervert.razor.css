@@ -16,6 +16,7 @@
 
 figure > div {
     overflow: hidden;
+    height: 404px;
     > img {
         display: block;
         margin: auto;

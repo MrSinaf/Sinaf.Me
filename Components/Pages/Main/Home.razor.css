@@ -344,10 +344,6 @@
         > img {
             border-radius: 10px;
 
-            &.blur {
-                filter: blur(6px);
-            }
-
             @media (max-width:600px) {
                 width: 92px;
                 text-align: center;
