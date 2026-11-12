@@ -51,8 +51,7 @@ public partial class WarhammerDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
-            .UseCollation("utf8mb4_uca1400_ai_ci")
-            .HasCharSet("utf8mb4");
+            .UseCollation("utf8mb4_uca1400_ai_ci");
 
         modelBuilder.Entity<Army>(entity =>
         {
@@ -73,8 +72,7 @@ public partial class WarhammerDbContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(64)
                 .HasColumnName("name")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .UseCollation("utf8mb3_uca1400_ai_ci");
             entity.Property(e => e.RaceId)
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("race_id");
@@ -250,13 +248,11 @@ public partial class WarhammerDbContext : DbContext
             entity.Property(e => e.Description)
                 .HasMaxLength(512)
                 .HasColumnName("description")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .UseCollation("utf8mb3_uca1400_ai_ci");
             entity.Property(e => e.Name)
                 .HasMaxLength(64)
                 .HasColumnName("name")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .UseCollation("utf8mb3_uca1400_ai_ci");
             entity.Property(e => e.ThumbnailS)
                 .HasDefaultValueSql("'100'")
                 .HasColumnType("tinyint(3) unsigned")
@@ -297,16 +293,14 @@ public partial class WarhammerDbContext : DbContext
             entity.Property(e => e.Description)
                 .HasMaxLength(512)
                 .HasColumnName("description")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .UseCollation("utf8mb3_uca1400_ai_ci");
             entity.Property(e => e.Id)
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("id");
             entity.Property(e => e.Name)
                 .HasMaxLength(64)
                 .HasColumnName("name")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .UseCollation("utf8mb3_uca1400_ai_ci");
             entity.Property(e => e.OrderType)
                 .HasDefaultValueSql("'1'")
                 .HasColumnType("tinyint(3) unsigned")
@@ -328,13 +322,11 @@ public partial class WarhammerDbContext : DbContext
             entity.Property(e => e.Unit)
                 .HasMaxLength(64)
                 .HasColumnName("unit")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .UseCollation("utf8mb3_uca1400_ai_ci");
             entity.Property(e => e.UnitType)
                 .HasMaxLength(32)
                 .HasColumnName("unit_type")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .UseCollation("utf8mb3_uca1400_ai_ci");
         });
 
         modelBuilder.Entity<Citation>(entity =>
@@ -349,13 +341,11 @@ public partial class WarhammerDbContext : DbContext
             entity.Property(e => e.Content)
                 .HasMaxLength(528)
                 .HasColumnName("content")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .UseCollation("utf8mb3_uca1400_ai_ci");
             entity.Property(e => e.Source)
                 .HasMaxLength(48)
                 .HasColumnName("source")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .UseCollation("utf8mb3_uca1400_ai_ci");
         });
 
         modelBuilder.Entity<Clan>(entity =>
@@ -375,21 +365,18 @@ public partial class WarhammerDbContext : DbContext
                 .HasMaxLength(128)
                 .HasDefaultValueSql("''")
                 .HasColumnName("currency")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .UseCollation("utf8mb3_uca1400_ai_ci");
             entity.Property(e => e.Name)
                 .HasMaxLength(64)
                 .HasColumnName("name")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .UseCollation("utf8mb3_uca1400_ai_ci");
             entity.Property(e => e.RaceId)
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("race_id");
             entity.Property(e => e.UniqueName)
                 .HasMaxLength(64)
                 .HasColumnName("unique_name")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .UseCollation("utf8mb3_uca1400_ai_ci");
 
             entity.HasOne(d => d.Race).WithMany(p => p.Clans)
                 .HasForeignKey(d => d.RaceId)
@@ -409,8 +396,7 @@ public partial class WarhammerDbContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(128)
                 .HasColumnName("name")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .UseCollation("utf8mb3_uca1400_ai_ci");
         });
 
         modelBuilder.Entity<Image>(entity =>
@@ -437,8 +423,7 @@ public partial class WarhammerDbContext : DbContext
             entity.Property(e => e.Path)
                 .HasMaxLength(64)
                 .HasColumnName("path")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .UseCollation("utf8mb3_uca1400_ai_ci");
         });
 
         modelBuilder.Entity<Paint>(entity =>
@@ -457,13 +442,11 @@ public partial class WarhammerDbContext : DbContext
             entity.Property(e => e.Hex)
                 .HasMaxLength(6)
                 .HasColumnName("hex")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .UseCollation("utf8mb3_uca1400_ai_ci");
             entity.Property(e => e.Name)
                 .HasMaxLength(64)
                 .HasColumnName("name")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .UseCollation("utf8mb3_uca1400_ai_ci");
             entity.Property(e => e.SubTypeId)
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("sub_type_id");
@@ -493,8 +476,7 @@ public partial class WarhammerDbContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(32)
                 .HasColumnName("name")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .UseCollation("utf8mb3_uca1400_ai_ci");
         });
 
         modelBuilder.Entity<PaintType>(entity =>
@@ -509,8 +491,7 @@ public partial class WarhammerDbContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(16)
                 .HasColumnName("name")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .UseCollation("utf8mb3_uca1400_ai_ci");
         });
 
         modelBuilder.Entity<Player>(entity =>
@@ -525,8 +506,7 @@ public partial class WarhammerDbContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(64)
                 .HasColumnName("name")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .UseCollation("utf8mb3_uca1400_ai_ci");
         });
 
         modelBuilder.Entity<Race>(entity =>
@@ -541,8 +521,7 @@ public partial class WarhammerDbContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(64)
                 .HasColumnName("name")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .UseCollation("utf8mb3_uca1400_ai_ci");
         });
 
         modelBuilder.Entity<Unit>(entity =>
@@ -561,8 +540,7 @@ public partial class WarhammerDbContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(64)
                 .HasColumnName("name")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .UseCollation("utf8mb3_uca1400_ai_ci");
             entity.Property(e => e.Number)
                 .HasDefaultValueSql("'1'")
                 .HasColumnType("int(10) unsigned")
@@ -601,8 +579,7 @@ public partial class WarhammerDbContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(32)
                 .HasColumnName("name")
-                .UseCollation("utf8mb3_uca1400_ai_ci")
-                .HasCharSet("utf8mb3");
+                .UseCollation("utf8mb3_uca1400_ai_ci");
             entity.Property(e => e.Order)
                 .HasDefaultValueSql("'1'")
                 .HasColumnType("tinyint(3) unsigned")

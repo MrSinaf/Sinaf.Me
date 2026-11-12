@@ -10,7 +10,7 @@ public static class DbContextUtils
 		if (dbString == null)
 			throw new Exception("Missing 'DB' environment variable (╯▔皿▔)╯");
 		
-		optionsBuilder.UseMySql(dbString, ServerVersion.Parse("11.8.3-MariaDB"));
+		optionsBuilder.UseMySQL(dbString);
 	}
 }
 
