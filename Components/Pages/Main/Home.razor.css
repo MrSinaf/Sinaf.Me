@@ -405,6 +405,19 @@
     }
 }
 
+#youtube {
+    text-align: center;
+    > h2 {
+        margin: 20px 10px 10px 10px;
+    }
+    > iframe {
+        max-width: 900px;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16/9;
+    }
+}
+
 #spotify {
     > h2 {
         margin: 30px 10px 10px 10px;
