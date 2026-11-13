@@ -47,13 +47,12 @@
     protected override async Task OnInitializedAsync()
     {
         await using var context = new WarhammerDbContext();
-        citations = await context.Citations.ToListAsync();
+        citations = await context.Citations.OrderByDescending(x => x.Id).ToListAsync();
     }
 
     private async Task OnAddClick()
     {
         errorMessage = string.Empty;
-        Console.WriteLine(citation.Content);
         if (citation.Content.Length < 5)
         {
             errorMessage = "La citation doit contenir au moins 5 caractères.";
@@ -71,7 +70,7 @@
         await using var context = new WarhammerDbContext();
         await context.Citations.AddAsync(citation);
         await context.SaveChangesAsync();
-        citations.Add(citation);
+        citations.Insert(0, citation);
         citation = new Citation { Content = string.Empty, Source = string.Empty };
     }
 
